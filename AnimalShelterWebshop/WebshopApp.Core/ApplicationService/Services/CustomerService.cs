@@ -1,33 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using WebshopApp.Core.DomainService;
 using WebshopApp.Core.Entity;
 
 namespace WebshopApp.Core.ApplicationService.Services
 {
     public class CustomerService : ICustomerService
     {
-        /*readonly ICustomerRepository _customerRepo;
-        readonly IOrderRepository _orderRepo;*/
+        readonly ICustomerRepository _customerRepo;
+        readonly IOrderRepository _orderRepo;
 
-        public ICustomerService NewCustomer(string FirstName, string LastName, string Address)
+        public CustomerService (ICustomerRepository customerRepository, IOrderRepository orderRepository)
         {
-            throw new NotImplementedException();
+            _customerRepo = customerRepository;
+            _orderRepo = orderRepository;
+        }
+        public Customer NewCustomer(string firstName, string lastName, string address)
+        {
+            var cust = new Customer()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Address = address
+            };
+            return cust;
         }
 
         public Customer CreateCustomer(Customer cust)
         {
-            throw new NotImplementedException();
+            return _customerRepo.Create(cust);
         }      
 
         public Customer FindCustomerByIDIncludingOrders(int id)
         {
-            throw new NotImplementedException();
+            var cust = _customerRepo.ReadCustomerByIDIncludingOrders(id);
+            return cust;
         }
 
         public List<Customer> GetAllCustomers()
         {
-            throw new NotImplementedException();
+            return _customerRepo.ReadAll().ToList();
         }
 
         public Customer UpdateCustomer(Customer custUpdate)
@@ -37,7 +51,7 @@ namespace WebshopApp.Core.ApplicationService.Services
 
         public Customer DeleteCustomerByID(int id)
         {
-            throw new NotImplementedException();
+            return _customerRepo.DeleteByID(id);
         }
     }
 }

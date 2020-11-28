@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebshopApp.Core.DomainService;
 using WebshopApp.Core.Entity;
@@ -8,15 +10,22 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
+        readonly WebshopAppContext _ctx;
+
+        public CustomerRepository(WebshopAppContext ctx)
+        {
+            _ctx = ctx;
+        }
         public Customer Create(Customer cust)
         {
-            throw new NotImplementedException();
+            var newCustomer = _ctx.Customers.Add(cust).Entity;
+            _ctx.SaveChanges();
+            return newCustomer;
         }
 
-
-        public IEnumerable<Customer> ReadAll()
+        public IEnumerable<Customer> ReadAllCustomers()
         {
-            throw new NotImplementedException();
+            return _ctx.Customers;
         }
 
         public Customer ReadCustomerByID(int id)
@@ -26,7 +35,9 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public Customer ReadCustomerByIDIncludingOrders(int id)
         {
-            throw new NotImplementedException();
+            return _ctx.Customers
+                .Include(c => c.OrderList)
+                .FirstOrDefault(c => c.ID == id);
         }
 
         public Customer Update(Customer custUpdate)
@@ -35,7 +46,9 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
         }
         public Customer DeleteByID(int id)
         {
-            throw new NotImplementedException();
+            var custRemoved = _ctx.Remove<Customer>(new Customer { ID = id }).Entity;
+            _ctx.SaveChanges();
+            return custRemoved;
         }
     }
 }

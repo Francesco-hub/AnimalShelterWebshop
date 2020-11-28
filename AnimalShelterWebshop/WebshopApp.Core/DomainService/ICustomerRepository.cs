@@ -12,7 +12,7 @@ namespace WebshopApp.Core.DomainService
 
         //Read data
         Customer ReadCustomerByID(int id);
-        IEnumerable<Customer> ReadAll();
+        IEnumerable<Customer> ReadAllCustomers();
         Customer ReadCustomerByIDIncludingOrders(int id);
 
         //Update data

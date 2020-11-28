@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WebshopApp.Core.DomainService;
 using WebshopApp.Core.Entity;
@@ -10,19 +12,36 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
     {
         readonly WebshopAppContext _ctx;
 
+        public OrderRepository (WebshopAppContext ctx)
+        {
+            _ctx = ctx;
+        }
+        public int Count()
+        {
+            return _ctx.Orders.Count();
+        }
         public Order Create(Order ord)
         {
-            throw new NotImplementedException();
+            _ctx.Attach(ord).State = EntityState.Added;
+            _ctx.SaveChanges();
+            return ord;
         }
 
-        public IEnumerable<Order> ReadAllOrders(Filter filter = null)
+        public IEnumerable<Order> ReadAllOrders(Filter filter)
         {
-            throw new NotImplementedException();
+            if (filter == null)
+            {
+                return _ctx.Orders;
+            }
+            return _ctx.Orders
+                .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+                .Take(filter.ItemsPerPage);
         }
 
         public Order ReadOrderByID(int id)
         {
-            throw new NotImplementedException();
+            return _ctx.Orders.Include(o => o.Customer)
+                .FirstOrDefault(o => o.ID == id);
         }
 
         public Order Update(Order ordUpdate)
@@ -31,7 +50,9 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
         }
         public Order Delete(int id)
         {
-            throw new NotImplementedException();
+            var removed = _ctx.Remove(new Order { ID = id }).Entity;
+            _ctx.SaveChanges();
+            return removed;
         }
     }
 }
