@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WebshopApp.Core.Entity\WebshopApp.Core.Entity.csproj" />
+    <ProjectReference Include="..\WebshopApp.Core\WebshopApp.Core.csproj" />
+    <ProjectReference Include="..\WebshopApp.Infrastructure.SQL.Data\WebshopApp.Infrastructure.SQL.Data.csproj" />
+  </ItemGroup>
+
 </Project>

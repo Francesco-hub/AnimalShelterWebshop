@@ -16,6 +16,11 @@ namespace WebshopRestAPI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy("AllowEverything", builder => builder.AllowAnyOrigin()
+                                                                                        .AllowAnyMethod()
+                                                                                        .AllowAnyHeader()));
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +30,8 @@ namespace WebshopRestAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("AllowEverything");
 
             app.UseRouting();
 

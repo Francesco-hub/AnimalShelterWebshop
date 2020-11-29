@@ -23,6 +23,6 @@ namespace WebshopApp.Core.ApplicationService
         Customer UpdateCustomer(Customer custUpdate);
 
         //DELETE
-            Customer DeleteCustomerByID(int id)
+        Customer DeleteCustomerByID(int id);
     }
 }
