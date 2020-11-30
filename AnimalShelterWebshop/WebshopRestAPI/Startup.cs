@@ -1,12 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebshopApp.Core.ApplicationService;
+using WebshopApp.Core.ApplicationService.Services;
+using WebshopApp.Core.DomainService;
+using WebshopApp.Infrastructure.SQL.Data;
+using WebshopApp.Infrastructure.SQL.Data.Repositories;
 
 namespace WebshopRestAPI
 {
@@ -14,13 +24,48 @@ namespace WebshopRestAPI
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options => options.AddPolicy("AllowEverything", builder => builder.AllowAnyOrigin()
                                                                                         .AllowAnyMethod()
                                                                                         .AllowAnyHeader()));
 
-            services.AddControllers();
+            //services.AddControllers();
+
+            //Add Swagger
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Swagger API",
+                    Description = "Trying Swagger",
+                    Version = "v1"
+                });
+                var fileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var filePath = Path.Combine(AppContext.BaseDirectory, fileName);
+                options.IncludeXmlComments(filePath);
+            });
+
+            services.AddDbContext<WebshopAppContext>(
+               opt => opt.UseSqlite("Data source = customerApp.db"));
+
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
+
+            services.AddMvc().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -29,19 +74,34 @@ namespace WebshopRestAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var ctx = scope.ServiceProvider.GetService<WebshopAppContext>();
+                    DBInitializer.SeedDB(ctx);
+                }
+            }
+            else
+            {
+
             }
 
-            app.UseCors("AllowEverything");
+            //app.UseCors("AllowEverything");
 
             app.UseRouting();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger API");
+                options.RoutePrefix = "";
             });
         }
     }
 }
+

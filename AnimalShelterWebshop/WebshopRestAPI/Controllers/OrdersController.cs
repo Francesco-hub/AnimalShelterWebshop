@@ -10,7 +10,7 @@ using WebshopApp.Core.Entity;
 namespace WebshopRestAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    // [ApiController]
     public class OrdersController : Controller
     {
         private readonly IOrderService _orderService;
@@ -35,7 +35,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         //GET: api/orders/5
-        [HttpGet("{id")]
+        [HttpGet("{id}")]
         public ActionResult<Order> Post([FromBody] Order order)
         {
             try

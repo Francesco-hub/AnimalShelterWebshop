@@ -11,7 +11,7 @@ using WebshopApp.Core.Entity;
 namespace WebshopRestAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    //[ApiController]
 
     public class CustomersController : Controller
     {
@@ -30,7 +30,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         // GET: api/customers/5 (read by id)
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [HttpGet("{id}")]
         public ActionResult<Customer> Get(int id)
         {
@@ -42,7 +42,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         // POST: api/customer (create json)
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult<Customer> Post([FromBody] Customer customer)
         {
@@ -58,7 +58,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         //PUT api/customers/5 (update)
-        [Authorize(Roles = "Administrator")]
+       // [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public ActionResult<Customer> Put(int id, [FromBody] Customer customer)
         {
@@ -70,7 +70,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         //DELETE api/customer/5
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public ActionResult<Customer> Delete(int id)
         {

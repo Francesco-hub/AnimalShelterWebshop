@@ -41,7 +41,7 @@ namespace WebshopApp.Core.ApplicationService.Services
 
         public List<Customer> GetAllCustomers()
         {
-            return _customerRepo.ReadAll().ToList();
+            return _customerRepo.ReadAllCustomers().ToList();
         }
 
         public Customer UpdateCustomer(Customer custUpdate)
