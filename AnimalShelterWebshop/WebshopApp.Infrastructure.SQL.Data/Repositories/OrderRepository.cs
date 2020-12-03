@@ -40,7 +40,7 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public Order ReadOrderByID(int id)
         {
-            return _ctx.Orders.Include(o => o.Customer)
+            return _ctx.Orders.Include(o => o.CustomerID)
                 .FirstOrDefault(o => o.ID == id);
         }
 

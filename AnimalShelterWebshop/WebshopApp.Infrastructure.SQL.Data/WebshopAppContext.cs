@@ -14,14 +14,30 @@ namespace WebshopApp.Infrastructure.SQL.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Customer)
-                .WithMany(c => c.OrderList)
-                .OnDelete(DeleteBehavior.SetNull);
+            //
+            // Opción A = Order tiene Customer
+            //
+            //modelBuilder.Entity<Order>()
+            //    .HasOne(p => p.Customer)
+            //    .WithMany(e => e.OrderList)
+            //    .OnDelete(DeleteBehavior.SetNull);
+
+            //
+            // Opción B = Order tiene CustomerID
+            //
+            //modelBuilder.Entity<Customer>()
+            //   .OwnsMany(p => p.OrderList);
+
+            //modelBuilder.Entity<Order>()
+            //  .OwnsMany(r => r.ProductList);
+          
+
         }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Product> Products { get; set; }
 
-        // public DbSet<User> Users { get; set; }
+      
+
     }
 }

@@ -20,11 +20,11 @@ namespace WebshopApp.Core.ApplicationService.Services
         }
         public Order CreateOrder(Order ord)
         {
-            if(ord.Customer == null || ord.Customer.ID <= 0)
+            if(ord.CustomerID == 0 || ord.CustomerID < 0)
             {
                 throw new InvalidDataException("You need a Customer to create an order");
             }
-            if (_customerRepo.ReadCustomerByID(ord.Customer.ID) == null)
+            if (_customerRepo.ReadCustomerByID(ord.CustomerID) == null)
             {
                 throw new InvalidDataException("Customer not found");
             }

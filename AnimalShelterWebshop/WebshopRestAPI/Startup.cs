@@ -49,11 +49,11 @@ namespace WebshopRestAPI
                 });
                 var fileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var filePath = Path.Combine(AppContext.BaseDirectory, fileName);
-                options.IncludeXmlComments(filePath);
+                //options.IncludeXmlComments(filePath);
             });
 
             services.AddDbContext<WebshopAppContext>(
-               opt => opt.UseSqlite("Data source = customerApp.db"));
+               opt => opt.UseSqlite("Data source=webShopApp.db"));
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();

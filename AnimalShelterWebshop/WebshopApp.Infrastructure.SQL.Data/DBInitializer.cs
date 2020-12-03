@@ -12,37 +12,103 @@ namespace WebshopApp.Infrastructure.SQL.Data
             //Every time I restart I reset the db: IMPORTANT: only on development process !!
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
+            Product product1 = ctx.Products.Add(new Product()
+            {
+                ID = 1,
+                Name = "Taza de It",
+                Price = 3000,
+                TypeName = "Taza"
+
+            }).Entity;
+            Product product2 = ctx.Products.Add(new Product()
+            {
+                ID = 2,
+                Name = "Taza de Lele",
+                Price = 8000,
+                TypeName = "Taza"
+
+            }).Entity;
+            Product product3 = ctx.Products.Add(new Product()
+            { ID = 3,
+                Name = "Camiseta de Pando",
+                Price = 90,
+                TypeName = "Camiseta"
+            }).Entity;
+            Order order1 = ctx.Orders.Add(new Order()
+            {
+                ID = 1,
+                CustomerID = 1,
+                DeliveryAddress = "La casa de Dron",
+                DeliveryDate = DateTime.Now,
+                OrderDate = DateTime.Now,
+                TotalPrice = 300,
+                ProductList =new List<Product> { product1, product2 }
+
+            }
+                ).Entity;
+            Order order2 = ctx.Orders.Add(new Order()
+            {
+                ID = 2,
+                CustomerID = 1,
+                DeliveryAddress = "La casa los cuscurros",
+                DeliveryDate = DateTime.Now,
+                OrderDate = DateTime.Now,
+                TotalPrice = 302,
+                ProductList = new List<Product> { product1, product3 }
+
+            }
+                ).Entity;
+            Order order3 = ctx.Orders.Add(new Order()
+            {
+                ID = 3,
+                CustomerID = 2,
+                DeliveryAddress = "La casa de simbo",
+                DeliveryDate = DateTime.Now,
+                OrderDate = DateTime.Now,
+                TotalPrice = 310,
+                ProductList = new List<Product> { product2, product3 }
+
+            }
+                ).Entity;
             var cust1 = ctx.Customers.Add(new Customer()
             {
                 ID = 1,
                 FirstName = "Mickey",
                 LastName = "Mouse",
-                Address = "Playhouse"
+                Email = "Playhouse@Disneyland",
+                Password = "Ch",
+                OrderList = new List<Order>
+                { 
+                    order1,order2
+                }
+               
             }).Entity;
 
-            ctx.Customers.Add(new Customer()
+            var cust2 = ctx.Customers.Add(new Customer()
             {
-                //ID = 2,
-                FirstName = "Ceni",
-                LastName = "Cienta",
-                Address = "Castillo"
-            });
+                ID = 2,
+                FirstName = "Barry",
+                LastName = "Allen",
+                Email = "FastMail@star-labs.cc",
+                Password = "run",
+                OrderList = new List<Order>
+                {
+                    order1,order3
+                }
+            }).Entity;
 
-            ctx.Orders.Add(new Order()
+            var cust3 = ctx.Customers.Add(new Customer()
             {
-                // ID = 1,
-                OrderDate = DateTime.Now,
-                DeliveryDate = DateTime.Now,
-                Customer = cust1
-            });
-
-            ctx.Orders.Add(new Order()
-            {
-                // ID = 1,
-                OrderDate = DateTime.Now,
-                DeliveryDate = DateTime.Now,
-                Customer = cust1
-            });
+                ID = 3,
+                FirstName = "Wonder",
+                LastName = "Woman",
+                Email = "PCNuevoMolaMucho@TheBeibus.com",
+                Password = "Epraldo",
+                OrderList = new List<Order>
+                {
+                    order2,order3
+                }
+            }).Entity;
             ctx.SaveChanges();
         }
     }

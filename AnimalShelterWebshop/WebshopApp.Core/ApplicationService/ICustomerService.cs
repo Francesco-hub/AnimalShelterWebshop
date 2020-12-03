@@ -8,9 +8,7 @@ namespace WebshopApp.Core.ApplicationService
     public interface ICustomerService
     {
         //Create a new customer
-        Customer NewCustomer(string FirstName,
-                                     string LastName,
-                                     string Address);
+        Customer NewCustomer(string firstName, string lastName, string address, string email, string password, List<Order> orderlist);
 
         //POST (CREATE)
         Customer CreateCustomer(Customer cust);
