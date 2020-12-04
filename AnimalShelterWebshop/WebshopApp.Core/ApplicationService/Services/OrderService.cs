@@ -52,11 +52,11 @@ namespace WebshopApp.Core.ApplicationService.Services
 
         public List<Order> GetFilteredOrders(Filter filter)
         {
-            if(filter.CurrentPage<0 || filter.ItemsPerPage < 0)
+            if (filter.CurrentPage < 0 || filter.ItemsPerPage < 0)
             {
                 throw new InvalidDataException("Current page and items per must be 0 or more");
             }
-            if((filter.CurrentPage - 1 * filter.ItemsPerPage) >= _orderRepo.Count())
+            if ((filter.CurrentPage - 1 * filter.ItemsPerPage) >= _orderRepo.Count())
             {
                 throw new InvalidDataException("index out of bounds current page is too high");
             }

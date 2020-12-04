@@ -29,13 +29,13 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public IEnumerable<Order> ReadAllOrders(Filter filter)
         {
-            if (filter == null)
-            {
+            //if (filter == null)
+            //{
                 return _ctx.Orders;
-            }
-            return _ctx.Orders
-                .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
-                .Take(filter.ItemsPerPage);
+            //}
+            //return _ctx.Orders
+            //    .Skip((filter.CurrentPage - 1) * filter.ItemsPerPage)
+            //    .Take(filter.ItemsPerPage);
         }
 
         public Order ReadOrderByID(int id)

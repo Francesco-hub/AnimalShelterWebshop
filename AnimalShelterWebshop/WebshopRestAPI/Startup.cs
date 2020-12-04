@@ -53,7 +53,10 @@ namespace WebshopRestAPI
             });
 
             services.AddDbContext<WebshopAppContext>(
-               opt => opt.UseSqlite("Data source=webShopApp.db"));
+               opt => opt.UseSqlite("Data source=webshopASApp.db"));
+
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();

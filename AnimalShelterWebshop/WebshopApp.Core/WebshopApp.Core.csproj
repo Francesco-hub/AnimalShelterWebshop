@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ApplicationService\Services\" />
-    <Folder Include="DomainService\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WebshopApp.Core.Entity\WebshopApp.Core.Entity.csproj" />
   </ItemGroup>
 

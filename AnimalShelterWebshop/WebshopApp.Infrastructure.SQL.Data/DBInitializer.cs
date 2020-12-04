@@ -34,6 +34,13 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Price = 90,
                 TypeName = "Camiseta"
             }).Entity;
+            Product product4 = ctx.Products.Add(new Product()
+            {
+                ID = 4,
+                Name = "Camiseta de Simbito",
+                Price = 90,
+                TypeName = "Camiseta"
+            }).Entity;
             Order order1 = ctx.Orders.Add(new Order()
             {
                 ID = 1,
@@ -49,7 +56,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             Order order2 = ctx.Orders.Add(new Order()
             {
                 ID = 2,
-                CustomerID = 1,
+                CustomerID = 18,
                 DeliveryAddress = "La casa los cuscurros",
                 DeliveryDate = DateTime.Now,
                 OrderDate = DateTime.Now,
@@ -58,18 +65,30 @@ namespace WebshopApp.Infrastructure.SQL.Data
 
             }
                 ).Entity;
-            Order order3 = ctx.Orders.Add(new Order()
+            //Order order3 = ctx.Orders.Add(new Order()
+            //{
+            //    ID = 3,
+            //    CustomerID = 55,
+            //    DeliveryAddress = "La casa de simbo",
+            //    DeliveryDate = DateTime.Now,
+            //    OrderDate = DateTime.Now,
+            //    TotalPrice = 310,
+            //    ProductList = new List<Product> { product2, product3 }
+
+            //}
+            //    ).Entity;
+            Order order4 = ctx.Orders.Add(new Order()
             {
-                ID = 3,
-                CustomerID = 2,
+                ID = 4,
+                CustomerID = 1408,
                 DeliveryAddress = "La casa de simbo",
                 DeliveryDate = DateTime.Now,
                 OrderDate = DateTime.Now,
                 TotalPrice = 310,
-                ProductList = new List<Product> { product2, product3 }
+                ProductList = new List<Product> { product2, product4 }
 
             }
-                ).Entity;
+               ).Entity;
             var cust1 = ctx.Customers.Add(new Customer()
             {
                 ID = 1,
@@ -93,7 +112,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Password = "run",
                 OrderList = new List<Order>
                 {
-                    order1,order3
+                    order1,order4
                 }
             }).Entity;
 
@@ -106,7 +125,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Password = "Epraldo",
                 OrderList = new List<Order>
                 {
-                    order2,order3
+                    order2,order4
                 }
             }).Entity;
             ctx.SaveChanges();

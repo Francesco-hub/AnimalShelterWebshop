@@ -25,7 +25,20 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public IEnumerable<Customer> ReadAllCustomers()
         {
-            return _ctx.Customers;
+            IEnumerable<Customer> allCustomers = _ctx.Customers;
+            IEnumerable<Order> AllOrders = _ctx.Orders;
+            foreach (Order ord in AllOrders)
+            {
+                foreach (Customer cust in allCustomers)
+                {
+                    if (ord.CustomerID == cust.ID)
+                    {
+                        cust.OrderList.Add(ord);
+                    }
+                }
+            }
+            return allCustomers;
+
         }
 
         public Customer ReadCustomerByID(int id)
@@ -35,9 +48,17 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public Customer ReadCustomerByIDIncludingOrders(int id)
         {
-            return _ctx.Customers
-                .Include(c => c.OrderList)
-                .FirstOrDefault(c => c.ID == id);
+            Customer foundCustomer =  _ctx.Customers.FirstOrDefault(c => c.ID == id);
+            IEnumerable<Order> AllOrders = _ctx.Orders;
+            int a = AllOrders.Count();
+            foreach(Order ord in AllOrders)
+            {
+                if(foundCustomer.ID == ord.CustomerID)
+                {
+                    foundCustomer.OrderList.Add(ord);
+                }
+            }
+            return foundCustomer;
         }
 
         public Customer Update(Customer custUpdate)

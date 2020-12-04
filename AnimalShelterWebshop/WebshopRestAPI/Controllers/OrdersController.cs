@@ -22,17 +22,29 @@ namespace WebshopRestAPI.Controllers
 
         //GET: api/orders (read all)
         [HttpGet]
-        public ActionResult<IEnumerable<Order>> Get([FromQuery] Filter filter)
+        public ActionResult<IEnumerable<Order>> Get()
         {
             try
             {
-                return Ok(_orderService.GetFilteredOrders(filter));
+                return Ok(_orderService.GetAllOrders());
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
         }
+        //[HttpGet]
+        //public ActionResult<IEnumerable<Order>> Get([FromQuery] Filter filter)
+        //{
+        //    try
+        //    {
+        //        return Ok(_orderService.GetFilteredOrders(filter));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return BadRequest(e.Message);
+        //    }
+        //}
 
         //GET: api/orders/5
         [HttpGet("{id}")]
