@@ -88,7 +88,7 @@ namespace WebshopRestAPI
 
             }
 
-            //app.UseCors("AllowEverything");
+            app.UseCors("AllowEverything");
 
             app.UseRouting();
             //app.UseAuthentication();

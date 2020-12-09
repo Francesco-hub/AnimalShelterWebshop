@@ -78,7 +78,7 @@ namespace WebshopRestAPI.Controllers
         // POST: api/customer (create json)
         //[Authorize(Roles = "Administrator")]
         [HttpPost]
-            public ActionResult<Product> Post([FromBody] Product product)
+            public ActionResult<Product> Post([FromBody] ProductDTO product)
             {
                 if (string.IsNullOrEmpty(product.Name))
                 {
@@ -88,7 +88,15 @@ namespace WebshopRestAPI.Controllers
                 {
                     BadRequest("Type is required for creating a Product");
                 }
-                return Ok(_productService.CreateProduct(product));
+            Product newProduct = new Product {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                TypeName = product.TypeName,
+                Orders = new List<Order>(),
+                OrderProducts = new List<OrderProduct>()
+            };
+                return Ok(_productService.CreateProduct(newProduct));
             }
 
             //PUT api/customers/5 (update)
