@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebshopApp.Core.ApplicationService;
 using WebshopApp.Core.Entity;
+using WebshopRestAPI.DTO;
 
 namespace WebshopRestAPI.Controllers
 {
@@ -22,11 +23,33 @@ namespace WebshopRestAPI.Controllers
 
         //GET: api/orders (read all)
         [HttpGet]
-        public ActionResult<IEnumerable<Order>> Get()
+        public ActionResult<IEnumerable<OrderDTO>> Get()
         {
             try
             {
-                return Ok(_orderService.GetAllOrders());
+                List<Order> dbOrdLst = _orderService.GetAllOrders();
+                List<OrderDTO> ordLst = new List<OrderDTO>();
+                foreach(Order ord in dbOrdLst)
+                {
+                    List<Product> ordProdLst = ord.Products;
+                    OrderDTO ordtDTO = new OrderDTO
+                    {
+                        Id = ord.Id,
+                        CustomerId = ord.CustomerId,
+                        OrderDate = ord.OrderDate,
+                        DeliveryDate = ord.DeliveryDate,
+                        DeliveryAddress = ord.DeliveryAddress,
+                        Products = new List<ProductDTO> { },
+                        TotalPrice = ord.TotalPrice
+
+                    };
+                    foreach (Product prod in ordProdLst)
+                    {
+                        ordtDTO.Products.Add(substituteProduct(prod));
+                    }
+                    ordLst.Add(ordtDTO);
+                }
+                return ordLst;
             }
             catch (Exception e)
             {
@@ -48,6 +71,37 @@ namespace WebshopRestAPI.Controllers
 
         //GET: api/orders/5
         [HttpGet("{id}")]
+        public ActionResult<OrderDTO> Get(int id)
+        {
+            try
+            {
+                Order dbOrd = _orderService.FindOrderByID(id);
+                    List<Product> ordProdLst = dbOrd.Products;
+                    OrderDTO ordDTO = new OrderDTO
+                    {
+                        Id = dbOrd.Id,
+                        CustomerId = dbOrd.CustomerId,
+                        OrderDate = dbOrd.OrderDate,
+                        DeliveryDate = dbOrd.DeliveryDate,
+                        DeliveryAddress = dbOrd.DeliveryAddress,
+                        Products = new List<ProductDTO> { },
+                        TotalPrice = dbOrd.TotalPrice
+
+                    };
+                    foreach (Product prod in ordProdLst)
+                    {
+                        ordDTO.Products.Add(substituteProduct(prod));
+                    }
+                return ordDTO;
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+
+        [HttpPost]
         public ActionResult<Order> Post([FromBody] Order order)
         {
             try
@@ -64,7 +118,7 @@ namespace WebshopRestAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult<Order> Put(int id, [FromBody] Order order)
         {
-            if (id < 1 || id != order.ID)
+            if (id < 1 || id != order.Id)
             {
                 return BadRequest("Parameter ID and OrderID must be the same");
             }
@@ -82,5 +136,16 @@ namespace WebshopRestAPI.Controllers
             }
             return Ok($"Order with ID {id} has been deleted");
         }*/
+        public ProductDTO substituteProduct(Product product)
+        {
+            ProductDTO prodDTO = new ProductDTO()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                TypeName = product.TypeName,
+                Price = product.Price
+            };
+            return prodDTO;
+        }
     }
 }

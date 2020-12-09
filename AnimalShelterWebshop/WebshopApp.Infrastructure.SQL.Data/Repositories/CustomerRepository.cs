@@ -25,40 +25,78 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public IEnumerable<Customer> ReadAllCustomers()
         {
-            IEnumerable<Customer> allCustomers = _ctx.Customers;
-            IEnumerable<Order> AllOrders = _ctx.Orders;
-            foreach (Order ord in AllOrders)
-            {
-                foreach (Customer cust in allCustomers)
-                {
-                    if (ord.CustomerID == cust.ID)
+            return _ctx.Customers.Include(c => c.Orders).ThenInclude(o => o.Products)
+                .Select(c =>
+                    new Customer()
                     {
-                        cust.OrderList.Add(ord);
+                        Id = c.Id,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        Email = c.LastName,
+                        Password = c.Password,
+                        Orders = c.Orders.Select(o => new Order()
+                        {
+                            Id = o.Id,
+                            Customer = o.Customer,
+                            CustomerId = o.CustomerId,
+                            DeliveryAddress = o.DeliveryAddress,
+                            OrderDate = o.OrderDate,
+                            DeliveryDate = o.DeliveryDate,
+                            OrderProducts = o.OrderProducts,
+                            TotalPrice = o.TotalPrice,
+                            Products = o.Products.Select(p => new Product()
+                            {
+                                Id = p.Id,
+                                Name = p.Name,
+                                TypeName = p.TypeName,
+                                OrderProducts = p.OrderProducts,
+                                Orders = p.Orders,
+                                Price = p.Price
+                            }).ToList()
+                        }).ToList()
+
                     }
-                }
-            }
-            return allCustomers;
 
-        }
+                );
 
-        public Customer ReadCustomerByID(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public Customer ReadCustomerByIDIncludingOrders(int id)
         {
-            Customer foundCustomer =  _ctx.Customers.FirstOrDefault(c => c.ID == id);
-            IEnumerable<Order> AllOrders = _ctx.Orders;
-            int a = AllOrders.Count();
-            foreach(Order ord in AllOrders)
-            {
-                if(foundCustomer.ID == ord.CustomerID)
-                {
-                    foundCustomer.OrderList.Add(ord);
-                }
-            }
-            return foundCustomer;
+            List<Customer> allCustLst =  _ctx.Customers.Include(c => c.Orders).ThenInclude(o => o.Products)
+                .Select(c =>
+                    new Customer()
+                    {
+                        Id = c.Id,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        Email = c.LastName,
+                        Password = c.Password,
+                        Orders = c.Orders.Select(o => new Order()
+                        {
+                            Id = o.Id,
+                            Customer = o.Customer,
+                            CustomerId = o.CustomerId,
+                            DeliveryAddress = o.DeliveryAddress,
+                            OrderDate = o.OrderDate,
+                            DeliveryDate = o.DeliveryDate,
+                            OrderProducts = o.OrderProducts,
+                            TotalPrice = o.TotalPrice,
+                            Products = o.Products.Select(p => new Product()
+                            {
+                                Id = p.Id,
+                                Name = p.Name,
+                                TypeName = p.TypeName,
+                                OrderProducts = p.OrderProducts,
+                                Orders = p.Orders,
+                                Price = p.Price
+                            }).ToList()
+                        }).ToList()
+
+                    }
+
+                ).ToList();
+            return allCustLst.FirstOrDefault(c => c.Id == id);
         }
 
         public Customer Update(Customer custUpdate)
@@ -67,9 +105,9 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
         }
         public Customer DeleteByID(int id)
         {
-            var custRemoved = _ctx.Remove<Customer>(new Customer { ID = id }).Entity;
+            var custRemoved = _ctx.Remove(new Customer { Id = id });
             _ctx.SaveChanges();
-            return custRemoved;
+            return custRemoved.Entity;
         }
     }
 }

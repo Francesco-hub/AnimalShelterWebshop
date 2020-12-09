@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebshopApp.Core.ApplicationService;
 using WebshopApp.Core.Entity;
+using WebshopRestAPI.DTO;
 
 namespace WebshopRestAPI.Controllers
 {
@@ -21,26 +22,62 @@ namespace WebshopRestAPI.Controllers
 
             // GET: api/products (read all)
             [HttpGet]
-            public ActionResult<IEnumerable<Product>> Get()
+            public ActionResult<IEnumerable<ProductDTO>> Get()
             {
-            return _productService.GetAllProducts();
+            List<Product> dbProdLst = _productService.GetAllProducts();
+            List<ProductDTO> prodLst = new List<ProductDTO>();
+            foreach (Product prod in dbProdLst)
+            {
+                prodLst.Add(new ProductDTO
+                {
+                    Id = prod.Id,
+                    Name = prod.Name,
+                    TypeName = prod.TypeName,
+                    Price = prod.Price
+                });
+            }
+            return prodLst;
             }
 
             // GET: api/products/5 (read by id)
             //[Authorize(Roles = "Administrator")]
-            [HttpGet("{id}")]
-            public ActionResult<Product> Get(int id)
-            {
-                if (id < 1)
-                {
-                    return BadRequest("ID must be bigger than 0");
-                }
-                return _productService.FindProductByID(id);
-            }
+            //[HttpGet("{id}")]
+            //public ActionResult<ProductDTO> Get(int id)
+            //{
+            //    if (id < 1)
+            //    {
+            //        return BadRequest("ID must be bigger than 0");
+            //    }
+            //    Product dbProd = _productService.FindProductByID(id);
+            //    return new ProductDTO{
+            //        Id = dbProd.Id,
+            //        Name = dbProd.Name,
+            //        TypeName = dbProd.TypeName,
+            //        Price = dbProd.Price
+            //    };
+            //}
 
-            // POST: api/customer (create json)
-            //[Authorize(Roles = "Administrator")]
-            [HttpPost]
+        [HttpGet("{TypeName}")]
+        public ActionResult<IEnumerable <ProductDTO>> Get (string typeName)
+        {
+            List<Product> dbProdLst = _productService.GetAllByType(typeName);
+            List<ProductDTO> prodLst = new List<ProductDTO>();
+            foreach(Product prod in dbProdLst)
+            {
+                prodLst.Add(new ProductDTO
+                {
+                    Id = prod.Id,
+                    Name = prod.Name,
+                    TypeName = prod.TypeName,
+                    Price = prod.Price
+                });
+            }
+            return prodLst;
+        }
+
+        // POST: api/customer (create json)
+        //[Authorize(Roles = "Administrator")]
+        [HttpPost]
             public ActionResult<Product> Post([FromBody] Product product)
             {
                 if (string.IsNullOrEmpty(product.Name))
@@ -59,7 +96,7 @@ namespace WebshopRestAPI.Controllers
             [HttpPut("{id}")]
             public ActionResult<Product> Put(int id, [FromBody] Product product)
             {
-                if (id < 1 || id != product.ID)
+                if (id < 1 || id != product.Id)
                 {
                     return BadRequest("Parameter ID and ProductID must be the same");
                 }

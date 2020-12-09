@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace WebshopApp.Core.Entity
+namespace WebshopRestAPI.DTO
 {
-    public class Customer
+    public class CustomerDTO
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -13,6 +14,6 @@ namespace WebshopApp.Core.Entity
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public List<OrderDTO> Orders { get; set; }
     }
 }

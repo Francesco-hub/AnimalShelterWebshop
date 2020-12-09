@@ -30,7 +30,7 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public Product Delete(int id)
         {
-            var prodRemoved = _ctx.Remove<Product>(new Product { ID = id }).Entity;
+            var prodRemoved = _ctx.Remove<Product>(new Product { Id = id }).Entity;
             _ctx.SaveChanges();
             return prodRemoved;
         }
@@ -43,12 +43,13 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
         public Product ReadProductByID(int id)
         {
             var changeTracker = _ctx.ChangeTracker.Entries<Product>();
-            return _ctx.Products.FirstOrDefault(p => p.ID == id);
+            return _ctx.Products.FirstOrDefault(p => p.Id == id);
         }
 
         public IEnumerable<Product> ReadProductsByType(string type)
         {
-            throw new NotImplementedException();
+            List<Product> prodLst = _ctx.Products.Where(p => p.TypeName.ToLower() == type.ToLower()).ToList();
+            return prodLst;
         }
 
         public Product Update(Product prodUpdate)

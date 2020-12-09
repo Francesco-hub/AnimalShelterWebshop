@@ -11,7 +11,6 @@ namespace WebshopApp.Core.DomainService
         Customer Create(Customer cust);
 
         //Read data
-        Customer ReadCustomerByID(int id);
         IEnumerable<Customer> ReadAllCustomers();
         Customer ReadCustomerByIDIncludingOrders(int id);
 

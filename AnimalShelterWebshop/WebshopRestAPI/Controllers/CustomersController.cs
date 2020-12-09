@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebshopApp.Core.ApplicationService;
 using WebshopApp.Core.Entity;
+using WebshopRestAPI.DTO;
 
 namespace WebshopRestAPI.Controllers
 {
@@ -24,21 +25,89 @@ namespace WebshopRestAPI.Controllers
 
         // GET: api/customers (read all)
         [HttpGet]
-        public ActionResult<IEnumerable<Customer>> Get()
+        public ActionResult<IEnumerable<CustomerDTO>> Get()
         {
-            return _customerService.GetAllCustomers();
+            List<Customer> DBcustLst =  _customerService.GetAllCustomers();
+            List<CustomerDTO> custLst = new List<CustomerDTO>(); 
+            foreach(Customer cust in DBcustLst)
+            {
+                List<Order> custOrdLst = cust.Orders;
+                CustomerDTO custDTO =  new CustomerDTO
+                {
+                    Id = cust.Id,
+                    FirstName = cust.FirstName,
+                    LastName = cust.LastName,
+                    Email= cust.Email,
+                    Password = cust.Password,
+                    Orders = new List<OrderDTO>() {}
+                };
+                foreach(Order ord in custOrdLst)
+                {
+                    List<Product> ordProdLst = ord.Products;
+                    OrderDTO ordDTO = new OrderDTO
+                    {
+                        Id = ord.Id,
+                        CustomerId = ord.CustomerId,
+                        OrderDate = ord.OrderDate,
+                        DeliveryDate = ord.DeliveryDate,
+                        DeliveryAddress = ord.DeliveryAddress,
+                        TotalPrice = ord.TotalPrice,
+                        Products = new List<ProductDTO>() {}
+
+                    };
+                    foreach (Product prod in ordProdLst)
+                    {
+                        ordDTO.Products.Add(substituteProduct(prod));
+                    }
+                    custDTO.Orders.Add(ordDTO);
+                }
+                custLst.Add(custDTO);
+            }
+            return custLst;
         }
 
         // GET: api/customers/5 (read by id)
         //[Authorize(Roles = "Administrator")]
         [HttpGet("{id}")]
-        public ActionResult<Customer> Get(int id)
+        public ActionResult<CustomerDTO> Get(int id)
         {
             if (id < 1)
             {
                 return BadRequest("ID must be bigger than 0");
             }
-            return _customerService.FindCustomerByIDIncludingOrders(id);
+            Customer dbCust = _customerService.FindCustomerByIDIncludingOrders(id);
+            List<Order> custOrdLst = dbCust.Orders;
+            CustomerDTO custDTO = new CustomerDTO
+            {
+                Id = dbCust.Id,
+                FirstName = dbCust.FirstName,
+                LastName = dbCust.LastName,
+                Email = dbCust.Email,
+                Password = dbCust.Password,
+                Orders = new List<OrderDTO>() { }
+            };
+            foreach (Order ord in custOrdLst)
+            {
+                List<Product> ordProdLst = ord.Products;
+                OrderDTO ordDTO = new OrderDTO
+                {
+                    Id = ord.Id,
+                    CustomerId = ord.CustomerId,
+                    OrderDate = ord.OrderDate,
+                    DeliveryDate = ord.DeliveryDate,
+                    DeliveryAddress = ord.DeliveryAddress,
+                    TotalPrice = ord.TotalPrice,
+                    Products = new List<ProductDTO>() { }
+
+                };
+                foreach (Product prod in ordProdLst)
+                {
+                    ordDTO.Products.Add(substituteProduct(prod));
+                }
+                custDTO.Orders.Add(ordDTO);
+            }
+            return custDTO;
+
         }
 
         // POST: api/customer (create json)
@@ -62,7 +131,7 @@ namespace WebshopRestAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult<Customer> Put(int id, [FromBody] Customer customer)
         {
-            if (id < 1 || id != customer.ID)
+            if (id < 1 || id != customer.Id)
             {
                 return BadRequest("Parameter ID and CustomerID must be the same");
             }
@@ -80,6 +149,17 @@ namespace WebshopRestAPI.Controllers
                 return StatusCode(404, $"Did not find Customer with ID {id}");
             }
             return Ok($"Customer with ID {id} has been deleted");
+        }
+        public ProductDTO substituteProduct(Product product)
+        {
+            ProductDTO prodDTO = new ProductDTO()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                TypeName = product.TypeName,
+                Price = product.Price
+            };
+            return prodDTO;
         }
     }
 }

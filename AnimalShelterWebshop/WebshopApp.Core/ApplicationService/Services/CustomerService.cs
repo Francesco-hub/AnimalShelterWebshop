@@ -25,7 +25,7 @@ namespace WebshopApp.Core.ApplicationService.Services
                 LastName = lastName,
                 Email = email,
                 Password = password,
-                OrderList = orderlist
+                Orders = orderlist
             };
             return cust;
         }

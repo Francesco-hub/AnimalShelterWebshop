@@ -20,11 +20,11 @@ namespace WebshopApp.Core.ApplicationService.Services
         }
         public Order CreateOrder(Order ord)
         {
-            if(ord.CustomerID == 0 || ord.CustomerID < 0)
+            if(ord.CustomerId == 0 || ord.CustomerId < 0)
             {
                 throw new InvalidDataException("You need a Customer to create an order");
             }
-            if (_customerRepo.ReadCustomerByID(ord.CustomerID) == null)
+            if (_customerRepo.ReadCustomerByIDIncludingOrders(ord.CustomerId) == null)
             {
                 throw new InvalidDataException("Customer not found");
             }
@@ -60,7 +60,7 @@ namespace WebshopApp.Core.ApplicationService.Services
             {
                 throw new InvalidDataException("index out of bounds current page is too high");
             }
-            return _orderRepo.ReadAllOrders(filter).ToList();
+            return _orderRepo.ReadAllOrders().ToList();
         }
 
         public Order UpdateOrder(Order OrdUpdate)
