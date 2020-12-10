@@ -102,13 +102,28 @@ namespace WebshopRestAPI.Controllers
             //PUT api/customers/5 (update)
             // [Authorize(Roles = "Administrator")]
             [HttpPut("{id}")]
-            public ActionResult<Product> Put(int id, [FromBody] Product product)
+            public ActionResult<ProductDTO> Put(int id, [FromBody] ProductDTO productDto)
             {
-                if (id < 1 || id != product.Id)
+                if (id < 1 || id != productDto.Id)
                 {
                     return BadRequest("Parameter ID and ProductID must be the same");
                 }
-                return Ok(_productService.UpdateProduct(product));
+            Product product = new Product()
+            {
+            Id = id,
+            Name = productDto.Name,
+            TypeName = productDto.TypeName,
+            Price = productDto.Price
+            };
+            Product updatedProd = _productService.UpdateProduct(product);
+            ProductDTO updatedProdDto = new ProductDTO 
+            {
+                Id = updatedProd.Id,
+                Name = updatedProd.Name,
+                TypeName = updatedProd.TypeName,
+                Price = updatedProd.Price
+            };
+            return Ok(updatedProdDto);
             }
 
             //DELETE api/customer/5

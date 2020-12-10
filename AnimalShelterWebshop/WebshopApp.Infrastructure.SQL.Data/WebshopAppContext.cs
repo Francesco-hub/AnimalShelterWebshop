@@ -45,6 +45,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                    // j.Property(pt => pt.PublicationDate).HasDefaultValueSql("Quantity");
                     j.HasKey(t => new { t.OrderId, t.ProductId });
                 });
+            
 
         }
         public DbSet<Customer> Customers { get; set; }

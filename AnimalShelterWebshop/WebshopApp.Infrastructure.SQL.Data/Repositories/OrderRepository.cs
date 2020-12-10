@@ -23,6 +23,18 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
         public Order Create(Order ord)
         {
             _ctx.Attach(ord).State = EntityState.Added;
+            //foreach (Product prod in ord.Products)
+            //{
+            //    OrderProduct newOrdProd = new OrderProduct
+            //    {
+            //        Order = ord,
+            //        OrderId = ord.Id,
+            //        Product = prod,
+            //        ProductId = prod.Id
+            //    };
+            //    _ctx.OrderProduct.Add(newOrdProd);
+            //    _ctx.SaveChanges();
+            //}          
             _ctx.SaveChanges();
             return ord;
         }

@@ -45,7 +45,7 @@ namespace WebshopRestAPI.Controllers
                     };
                     foreach (Product prod in ordProdLst)
                     {
-                        ordtDTO.Products.Add(substituteProduct(prod));
+                        ordtDTO.Products.Add(substituteProductToProductDto(prod));
                     }
                     ordLst.Add(ordtDTO);
                 }
@@ -90,7 +90,7 @@ namespace WebshopRestAPI.Controllers
                     };
                     foreach (Product prod in ordProdLst)
                     {
-                        ordDTO.Products.Add(substituteProduct(prod));
+                        ordDTO.Products.Add(substituteProductToProductDto(prod));
                     }
                 return ordDTO;
             }
@@ -102,11 +102,25 @@ namespace WebshopRestAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Order> Post([FromBody] Order order)
+        public ActionResult<OrderDTO> Post([FromBody] OrderDTO orderDto)
         {
             try
             {
-                return Ok(_orderService.CreateOrder(order));
+                Order newOrder = new Order 
+                { 
+                Id = orderDto.Id,
+                OrderDate = orderDto.OrderDate,
+                DeliveryDate = orderDto.DeliveryDate,
+                CustomerId = orderDto.CustomerId,
+                DeliveryAddress = orderDto.DeliveryAddress,
+                Products = new List<Product> { },
+                TotalPrice = orderDto.TotalPrice
+                };
+                foreach (ProductDTO prodDto in orderDto.Products)
+                {
+                    newOrder.Products.Add(substituteProductDtoToProduct(prodDto));
+                }
+                return Ok(_orderService.CreateOrder(newOrder));
             }
             catch (Exception e)
             {
@@ -136,7 +150,7 @@ namespace WebshopRestAPI.Controllers
             }
             return Ok($"Order with ID {id} has been deleted");
         }*/
-        public ProductDTO substituteProduct(Product product)
+        public ProductDTO substituteProductToProductDto(Product product)
         {
             ProductDTO prodDTO = new ProductDTO()
             {
@@ -146,6 +160,19 @@ namespace WebshopRestAPI.Controllers
                 Price = product.Price
             };
             return prodDTO;
+        }
+        public Product substituteProductDtoToProduct(ProductDTO productDto)
+        {
+            Product prod = new Product()
+            {
+                Id = productDto.Id,
+                Name = productDto.Name,
+                TypeName = productDto.TypeName,
+                Price = productDto.Price,
+                Orders = new List<Order> { },
+                OrderProducts = new List<OrderProduct> { }
+            };
+            return prod;
         }
     }
 }

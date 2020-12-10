@@ -92,21 +92,24 @@ namespace WebshopApp.Infrastructure.SQL.Data
 
             ctx.SaveChanges();
 
-            ctx.OrderProduct.Add(new OrderProduct()
+            OrderProduct ordProd1 = ctx.OrderProduct.Add(new OrderProduct()
             {
                 OrderId = order1.Id,
                 ProductId =  product1.Id
-            });
-            ctx.OrderProduct.Add(new OrderProduct()
+            }).Entity;
+            OrderProduct ordProd2 = ctx.OrderProduct.Add(new OrderProduct()
             {
                 OrderId = order1.Id,
                 ProductId = product2.Id
-            });
-            ctx.OrderProduct.Add(new OrderProduct()
+            }).Entity;
+            OrderProduct ordProd3 = ctx.OrderProduct.Add(new OrderProduct()
             {
                 OrderId = order3.Id,
                 ProductId = product4.Id
-            });
+            }).Entity;
+            ctx.SaveChanges();
+            product2.OrderProducts.Add(ordProd2);
+            product2.Orders.Add(order1);
             ctx.SaveChanges();
         }
     }
