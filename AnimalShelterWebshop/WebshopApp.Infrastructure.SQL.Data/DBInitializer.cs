@@ -67,27 +67,31 @@ namespace WebshopApp.Infrastructure.SQL.Data
             {
                 Name = "It Mug",
                 Price = 3000,
-                TypeName = "Taza"
+                TypeName = "Taza",
+                ImageUrl = "ImageLink 1"
 
             }).Entity;
             Product product2 = ctx.Products.Add(new Product()
             {
                 Name = "Cat Mug",
                 Price = 8000,
-                TypeName = "Taza"
+                TypeName = "Taza",
+                ImageUrl = "ImageLink 2"
 
             }).Entity;
             Product product3 = ctx.Products.Add(new Product()
             {
                 Name = "Panda Shirt",
                 Price = 90,
-                TypeName = "Camiseta"
+                TypeName = "Camiseta",
+                ImageUrl = "ImageLink 3"
             }).Entity;
             Product product4 = ctx.Products.Add(new Product()
             {
                 Name = "Lion Shirt",
                 Price = 90,
-                TypeName = "Camiseta"
+                TypeName = "Camiseta",
+                ImageUrl = "ImageLink 4"
             }).Entity;
 
             ctx.SaveChanges();

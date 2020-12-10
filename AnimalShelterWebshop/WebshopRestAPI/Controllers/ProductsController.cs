@@ -33,7 +33,8 @@ namespace WebshopRestAPI.Controllers
                     Id = prod.Id,
                     Name = prod.Name,
                     TypeName = prod.TypeName,
-                    Price = prod.Price
+                    Price = prod.Price,
+                    ImageUrl = prod.ImageUrl
                 });
             }
             return prodLst;
@@ -69,7 +70,8 @@ namespace WebshopRestAPI.Controllers
                     Id = prod.Id,
                     Name = prod.Name,
                     TypeName = prod.TypeName,
-                    Price = prod.Price
+                    Price = prod.Price,
+                    ImageUrl = prod.ImageUrl
                 });
             }
             return prodLst;
@@ -93,6 +95,7 @@ namespace WebshopRestAPI.Controllers
                 Name = product.Name,
                 Price = product.Price,
                 TypeName = product.TypeName,
+                ImageUrl = product.ImageUrl,
                 Orders = new List<Order>(),
                 OrderProducts = new List<OrderProduct>()
             };
@@ -113,7 +116,8 @@ namespace WebshopRestAPI.Controllers
             Id = id,
             Name = productDto.Name,
             TypeName = productDto.TypeName,
-            Price = productDto.Price
+            Price = productDto.Price,
+            ImageUrl = productDto.ImageUrl
             };
             Product updatedProd = _productService.UpdateProduct(product);
             ProductDTO updatedProdDto = new ProductDTO 
@@ -121,7 +125,8 @@ namespace WebshopRestAPI.Controllers
                 Id = updatedProd.Id,
                 Name = updatedProd.Name,
                 TypeName = updatedProd.TypeName,
-                Price = updatedProd.Price
+                Price = updatedProd.Price,
+                ImageUrl = updatedProd.ImageUrl
             };
             return Ok(updatedProdDto);
             }

@@ -158,7 +158,8 @@ namespace WebshopRestAPI.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 TypeName = product.TypeName,
-                Price = product.Price
+                Price = product.Price,
+                ImageUrl = product.ImageUrl
             };
             return prodDTO;
         }
@@ -169,6 +170,7 @@ namespace WebshopRestAPI.Controllers
                 Id = productDto.Id,
                 Name = productDto.Name,
                 TypeName = productDto.TypeName,
+                ImageUrl = productDto.ImageUrl,
                 Price = productDto.Price,
                 Orders = new List<Order> { },
                 OrderProducts = new List<OrderProduct> { }

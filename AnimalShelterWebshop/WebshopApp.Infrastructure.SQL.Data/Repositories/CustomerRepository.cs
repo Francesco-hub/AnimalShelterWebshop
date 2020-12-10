@@ -49,6 +49,7 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
                                 Id = p.Id,
                                 Name = p.Name,
                                 TypeName = p.TypeName,
+                                ImageUrl = p.ImageUrl,
                                 OrderProducts = p.OrderProducts,
                                 Orders = p.Orders,
                                 Price = p.Price
@@ -87,6 +88,7 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
                                 Id = p.Id,
                                 Name = p.Name,
                                 TypeName = p.TypeName,
+                                ImageUrl = p.ImageUrl,
                                 OrderProducts = p.OrderProducts,
                                 Orders = p.Orders,
                                 Price = p.Price

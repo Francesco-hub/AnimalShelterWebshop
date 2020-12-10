@@ -16,5 +16,7 @@ namespace WebshopApp.Core.Entity
         public List<OrderProduct> OrderProducts { get; set; }
 
         public List<Order> Orders { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

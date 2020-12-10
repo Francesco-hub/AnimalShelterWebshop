@@ -59,7 +59,8 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
                     TypeName = p.TypeName,
                     OrderProducts = p.OrderProducts,
                     Orders = p.Orders,
-                    Price = p.Price
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl
                 }).ToList()
             }).ToList();
         }
@@ -85,7 +86,8 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
                     TypeName = p.TypeName,
                     OrderProducts = p.OrderProducts,
                     Orders = p.Orders,
-                    Price = p.Price
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl
                 }).ToList()
             }).ToList();
                 return dbOrdLst.FirstOrDefault(o => o.Id == id);
