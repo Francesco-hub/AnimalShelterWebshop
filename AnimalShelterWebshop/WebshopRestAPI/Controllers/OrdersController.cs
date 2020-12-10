@@ -114,11 +114,12 @@ namespace WebshopRestAPI.Controllers
                 CustomerId = orderDto.CustomerId,
                 DeliveryAddress = orderDto.DeliveryAddress,
                 Products = new List<Product> { },
-                TotalPrice = orderDto.TotalPrice
+                TotalPrice = 0
                 };
                 foreach (ProductDTO prodDto in orderDto.Products)
                 {
                     newOrder.Products.Add(substituteProductDtoToProduct(prodDto));
+                    newOrder.TotalPrice += prodDto.Price;
                 }
                 return Ok(_orderService.CreateOrder(newOrder));
             }
