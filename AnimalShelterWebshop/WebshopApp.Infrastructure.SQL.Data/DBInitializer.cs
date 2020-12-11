@@ -67,7 +67,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             {
                 Name = "It Mug",
                 Price = 3000,
-                TypeName = "Taza",
+                TypeName = "Mugs",
                 ImageUrl = "ImageLink 1"
 
             }).Entity;
@@ -75,7 +75,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             {
                 Name = "Cat Mug",
                 Price = 8000,
-                TypeName = "Taza",
+                TypeName = "Mugs",
                 ImageUrl = "ImageLink 2"
 
             }).Entity;
@@ -83,15 +83,39 @@ namespace WebshopApp.Infrastructure.SQL.Data
             {
                 Name = "Panda Shirt",
                 Price = 90,
-                TypeName = "Camiseta",
+                TypeName = "Tshirts",
                 ImageUrl = "ImageLink 3"
             }).Entity;
             Product product4 = ctx.Products.Add(new Product()
             {
                 Name = "Lion Shirt",
                 Price = 90,
-                TypeName = "Camiseta",
+                TypeName = "Tshirts",
                 ImageUrl = "ImageLink 4"
+            }).Entity;
+            Product product5 = ctx.Products.Add(new Product()
+            {
+                Name = "Epraldo",
+                Price = 9000,
+                TypeName = "Other",
+                ImageUrl = "ImageLink 5"
+
+            }).Entity;
+            Product product6 = ctx.Products.Add(new Product()
+            {
+                Name = "Lele Keychain",
+                Price = 5000,
+                TypeName = "Keychains",
+                ImageUrl = "ImageLink 6"
+
+            }).Entity;
+            Product product7 = ctx.Products.Add(new Product()
+            {
+                Name = "Yui Keychain",
+                Price = 700,
+                TypeName = "Keychains",
+                ImageUrl = "ImageLink 7"
+
             }).Entity;
 
             ctx.SaveChanges();

@@ -39,15 +39,46 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 j => j
                     .HasOne(pt => pt.Product)
                     .WithMany(p => p.OrderProducts)
-                    .HasForeignKey(pt => pt.ProductId),
+                    .HasForeignKey(pt => pt.ProductId), //.OnDelete(DeleteBehavior),
                 j =>
                 {
-                   // j.Property(pt => pt.PublicationDate).HasDefaultValueSql("Quantity");
                     j.HasKey(t => new { t.OrderId, t.ProductId });
                 });
-            
+            modelBuilder.Entity<Product>().Property<bool>("isDeleted");
+            modelBuilder.Entity<Product>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
+
+
 
         }
+        public override int SaveChanges()
+        {
+            UpdateDeleted();
+            return base.SaveChanges();
+        }
+
+        private void UpdateDeleted()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                Product prod = new Product();
+                if(entry.Entity.GetType() == prod.GetType())
+                {
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            entry.CurrentValues["isDeleted"] = false;
+                            break;
+                        case EntityState.Deleted:
+                            entry.State = EntityState.Modified;
+                            entry.CurrentValues["isDeleted"] = true;
+                            break;
+                    }
+
+                }
+
+            }
+        }
+
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }

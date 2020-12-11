@@ -41,7 +41,7 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
 
         public IEnumerable<Order> ReadAllOrders()
         {
-            return _ctx.Orders.Include(p => p.Products).
+            return _ctx.Orders.Include(p => p.Products).IgnoreQueryFilters().
             Select(o => new Order()
             {
                 Id = o.Id,
