@@ -31,7 +31,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             {
                 FirstName = "Barry",
                 LastName = "Allen",
-                Email = "FastMail@star-labs.cc",
+                Email = "f",
                 PasswordHash = PasswordHashCust2,
                 PasswordSalt = PasswordSaltCust2,
                 IsAdmin = true
