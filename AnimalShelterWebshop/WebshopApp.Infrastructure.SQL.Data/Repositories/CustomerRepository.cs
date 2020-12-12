@@ -32,8 +32,10 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
                         Id = c.Id,
                         FirstName = c.FirstName,
                         LastName = c.LastName,
-                        Email = c.LastName,
-                        Password = c.Password,
+                        Email = c.Email,
+                        PasswordHash = c.PasswordHash,
+                        PasswordSalt = c.PasswordSalt,
+                        IsAdmin = c.IsAdmin,
                         Orders = c.Orders.Select(o => new Order()
                         {
                             Id = o.Id,
@@ -71,8 +73,10 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
                         Id = c.Id,
                         FirstName = c.FirstName,
                         LastName = c.LastName,
-                        Email = c.LastName,
-                        Password = c.Password,
+                        Email = c.Email,
+                        PasswordHash = c.PasswordHash,
+                        PasswordSalt = c.PasswordSalt,
+                        IsAdmin = c.IsAdmin,
                         Orders = c.Orders.Select(o => new Order()
                         {
                             Id = o.Id,

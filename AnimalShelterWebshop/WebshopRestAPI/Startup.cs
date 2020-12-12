@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,11 +13,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using WebshopApp.Core.ApplicationService;
 using WebshopApp.Core.ApplicationService.Services;
 using WebshopApp.Core.DomainService;
 using WebshopApp.Infrastructure.SQL.Data;
 using WebshopApp.Infrastructure.SQL.Data.Repositories;
+using WebshopRestAPI.Helpers;
 
 namespace WebshopRestAPI
 {
@@ -27,11 +30,29 @@ namespace WebshopRestAPI
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            JwtSecurityKey.SetSecret("nnfal45lngfqLqLLLLL75K");
         }
 
         public IConfiguration Configuration { get; }
+       
         public void ConfigureServices(IServiceCollection services)
         {
+            Byte[] secretBytes = new byte[40];
+            Random rand = new Random();
+            rand.NextBytes(secretBytes);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = JwtSecurityKey.Key,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromMinutes(5)
+
+                };
+            });
             services.AddCors(options => options.AddPolicy("AllowEverything", builder => builder.AllowAnyOrigin()
                                                                                         .AllowAnyMethod()
                                                                                         .AllowAnyHeader()));
@@ -69,6 +90,8 @@ namespace WebshopRestAPI
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddSingleton<IAuthenticationHelper>(new
+                AuthenticationHelper(secretBytes));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -91,8 +114,8 @@ namespace WebshopRestAPI
             app.UseCors("AllowEverything");
 
             app.UseRouting();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
         {

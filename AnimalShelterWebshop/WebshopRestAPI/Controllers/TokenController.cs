@@ -4,84 +4,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebshopApp.Core.DomainService;
+using WebshopApp.Core.Entity;
+using WebshopRestAPI.Helpers;
+using WebshopRestAPI.Models;
+
 
 namespace WebshopRestAPI.Controllers
 {
+    [Route("api/[controller]")]
     public class TokenController : Controller
     {
-        // GET: TokenController
-        public ActionResult Index()
+        private ICustomerRepository CustomerRepository;
+        private IAuthenticationHelper authenticationHelper;
+
+        public TokenController(ICustomerRepository custRepo, IAuthenticationHelper authHelper)
         {
-            return View();
+            CustomerRepository = custRepo;
+            authenticationHelper = authHelper;
         }
 
-        // GET: TokenController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
-        // GET: TokenController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: TokenController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Login([FromBody] LoginInputModel model)
         {
-            try
+            var customer = CustomerRepository.ReadAllCustomers().FirstOrDefault(u => u.Email == model.Email);
+
+            if (customer == null)
+                return Unauthorized();
+
+            if (!authenticationHelper.VerifyPasswordHash(model.Password, customer.PasswordHash, customer.PasswordSalt))
+                return Unauthorized();
+
+            // Authentication successful
+            return Ok(new
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+                email = customer.Email,
+                token = authenticationHelper.GenerateToken(customer)
+            });
         }
 
-        // GET: TokenController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: TokenController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: TokenController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TokenController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

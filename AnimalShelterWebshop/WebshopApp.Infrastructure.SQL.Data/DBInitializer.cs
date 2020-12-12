@@ -12,12 +12,19 @@ namespace WebshopApp.Infrastructure.SQL.Data
             //Every time I restart I reset the db: IMPORTANT: only on development process !!
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
+            string password = "1234";
+            byte[] PasswordHashCust1, PasswordSaltCust1, PasswordHashCust2, PasswordSaltCust2, PasswordHashCust3, PasswordSaltCust3;
+            CreatePasswordHash(password, out PasswordHashCust1, out PasswordSaltCust1);
+            CreatePasswordHash(password, out PasswordHashCust2, out PasswordSaltCust2);
+            CreatePasswordHash(password, out PasswordHashCust3, out PasswordSaltCust3);
             var cust1 = ctx.Customers.Add(new Customer()
             {
                 FirstName = "Mickey",
                 LastName = "Mouse",
                 Email = "Playhouse@Disneyland",
-                Password = "Ch"
+                PasswordHash = PasswordHashCust1,
+                PasswordSalt = PasswordSaltCust1,
+                IsAdmin = false
             }).Entity;
 
             var cust2 = ctx.Customers.Add(new Customer()
@@ -25,7 +32,9 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 FirstName = "Barry",
                 LastName = "Allen",
                 Email = "FastMail@star-labs.cc",
-                Password = "run"
+                PasswordHash = PasswordHashCust2,
+                PasswordSalt = PasswordSaltCust2,
+                IsAdmin = true
             }).Entity;
 
             var cust3 = ctx.Customers.Add(new Customer()
@@ -33,7 +42,9 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 FirstName = "Wonder",
                 LastName = "Woman",
                 Email = "PCNuevoMolaMucho@TheBeibus.com",
-                Password = "Epraldo"
+                PasswordHash = PasswordHashCust3,
+                PasswordSalt = PasswordSaltCust3,
+                IsAdmin = true
             }).Entity;
             ctx.SaveChanges();
             Order order1 = ctx.Orders.Add(new Order()
@@ -139,6 +150,15 @@ namespace WebshopApp.Infrastructure.SQL.Data
             product2.OrderProducts.Add(ordProd2);
             product2.Orders.Add(order1);
             ctx.SaveChanges();
+        }
+
+        private static void CreatePasswordHash(string password, out byte[] passwordHashCust, out byte[] passwordSaltCust)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSaltCust = hmac.Key;
+                passwordHashCust = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
         }
     }
 }

@@ -17,14 +17,16 @@ namespace WebshopApp.Core.ApplicationService.Services
             _customerRepo = customerRepository;
             _orderRepo = orderRepository;
         }
-        public Customer NewCustomer(string firstName, string lastName, string address, string email, string password, List<Order> orderlist)
+        public Customer NewCustomer(string firstName, string lastName, string address, bool isAdmin, string email, byte[] passwordHash, byte[]passwordSalt, List<Order> orderlist)
         {
             var cust = new Customer()
             {
                 FirstName = firstName,
                 LastName = lastName,
+                IsAdmin = isAdmin,
                 Email = email,
-                Password = password,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
                 Orders = orderlist
             };
             return cust;

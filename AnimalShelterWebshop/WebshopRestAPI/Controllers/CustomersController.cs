@@ -24,6 +24,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         // GET: api/customers (read all)
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<CustomerDTO>> Get()
         {
@@ -38,7 +39,9 @@ namespace WebshopRestAPI.Controllers
                     FirstName = cust.FirstName,
                     LastName = cust.LastName,
                     Email= cust.Email,
-                    Password = cust.Password,
+                    isAdmin = cust.IsAdmin,
+                    PasswordHash = cust.PasswordHash,
+                    PasswordSalt = cust.PasswordSalt,
                     Orders = new List<OrderDTO>() {}
                 };
                 foreach(Order ord in custOrdLst)
@@ -67,7 +70,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         // GET: api/customers/5 (read by id)
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [HttpGet("{id}")]
         public ActionResult<CustomerDTO> Get(int id)
         {
@@ -83,7 +86,9 @@ namespace WebshopRestAPI.Controllers
                 FirstName = dbCust.FirstName,
                 LastName = dbCust.LastName,
                 Email = dbCust.Email,
-                Password = dbCust.Password,
+                PasswordHash = dbCust.PasswordHash,
+                PasswordSalt = dbCust.PasswordSalt,
+                isAdmin = dbCust.IsAdmin,
                 Orders = new List<OrderDTO>() { }
             };
             foreach (Order ord in custOrdLst)
