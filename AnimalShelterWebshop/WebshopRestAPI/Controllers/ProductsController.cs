@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,9 @@ namespace WebshopRestAPI.Controllers
                 _productService = productService;
             }
 
-            // GET: api/products (read all)
-            [HttpGet]
+        // GET: api/products (read all)
+        [Authorize]
+        [HttpGet]
             public ActionResult<IEnumerable<ProductDTO>> Get()
             {
             List<Product> dbProdLst = _productService.GetAllProducts();
