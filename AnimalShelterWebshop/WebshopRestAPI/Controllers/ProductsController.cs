@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace WebshopRestAPI.Controllers
             }
 
         // GET: api/products (read all)
-        [Authorize]
+        [Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
             public ActionResult<IEnumerable<ProductDTO>> Get()
             {
