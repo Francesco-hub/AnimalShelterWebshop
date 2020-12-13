@@ -11,7 +11,7 @@ namespace WebshopApp.Core.DomainService
         Order Create(Order ord);
 
         //Read data
-        Order ReadOrderByID(int id);
+        IEnumerable<Order> ReadOrderByCustomerID(int id);
         IEnumerable<Order> ReadAllOrders();
         int Count();
 

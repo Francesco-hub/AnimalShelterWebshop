@@ -49,7 +49,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             ctx.SaveChanges();
             Order order1 = ctx.Orders.Add(new Order()
             {
-                CustomerId = cust1.Id,
+                CustomerId = cust2.Id,
                 DeliveryAddress = "House 1",
                 DeliveryDate = DateTime.Now,
                 OrderDate = DateTime.Now,
@@ -58,7 +58,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 ).Entity;
             Order order2 = ctx.Orders.Add(new Order()
             {
-                CustomerId = cust1.Id,
+                CustomerId = cust2.Id,
                 DeliveryAddress = "House 2",
                 DeliveryDate = DateTime.Now,
                 OrderDate = DateTime.Now,

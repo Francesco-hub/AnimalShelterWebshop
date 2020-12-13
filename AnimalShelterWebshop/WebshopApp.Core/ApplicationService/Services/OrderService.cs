@@ -40,9 +40,9 @@ namespace WebshopApp.Core.ApplicationService.Services
             return _orderRepo.Delete(id);
         }
 
-        public Order FindOrderByID(int id)
+        public List<Order> FindOrderByCustomerID(int id)
         {
-            return _orderRepo.ReadOrderByID(id);
+            return _orderRepo.ReadOrderByCustomerID(id).ToList();
         }
 
         public List<Order> GetAllOrders()

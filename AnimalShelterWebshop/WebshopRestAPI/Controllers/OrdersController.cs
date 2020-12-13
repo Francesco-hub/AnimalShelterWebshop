@@ -70,36 +70,41 @@ namespace WebshopRestAPI.Controllers
         //}
 
         //GET: api/orders/5
-        [HttpGet("{id}")]
-        public ActionResult<OrderDTO> Get(int id)
+        [HttpGet("{customerId}")]
+        public ActionResult<IEnumerable<OrderDTO>> Get(int customerId)
         {
             try
             {
-                Order dbOrd = _orderService.FindOrderByID(id);
-                    List<Product> ordProdLst = dbOrd.Products;
-                    OrderDTO ordDTO = new OrderDTO
+                List<Order> dbOrdLst = _orderService.FindOrderByCustomerID(customerId);
+                List<OrderDTO> ordLst = new List<OrderDTO>();
+                foreach (Order ord in dbOrdLst)
+                {
+                    List<Product> ordProdLst = ord.Products;
+                    OrderDTO ordtDTO = new OrderDTO
                     {
-                        Id = dbOrd.Id,
-                        CustomerId = dbOrd.CustomerId,
-                        OrderDate = dbOrd.OrderDate,
-                        DeliveryDate = dbOrd.DeliveryDate,
-                        DeliveryAddress = dbOrd.DeliveryAddress,
+                        Id = ord.Id,
+                        CustomerId = ord.CustomerId,
+                        OrderDate = ord.OrderDate,
+                        DeliveryDate = ord.DeliveryDate,
+                        DeliveryAddress = ord.DeliveryAddress,
                         Products = new List<ProductDTO> { },
-                        TotalPrice = dbOrd.TotalPrice
+                        TotalPrice = ord.TotalPrice
 
                     };
                     foreach (Product prod in ordProdLst)
                     {
-                        ordDTO.Products.Add(substituteProductToProductDto(prod));
+                        ordtDTO.Products.Add(substituteProductToProductDto(prod));
                     }
-                return ordDTO;
+                    ordLst.Add(ordtDTO);
+                }
+                return ordLst;
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-
         }
+
 
         [HttpPost]
         public ActionResult<OrderDTO> Post([FromBody] OrderDTO orderDto)
