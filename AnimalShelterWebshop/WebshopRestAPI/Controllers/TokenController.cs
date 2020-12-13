@@ -37,8 +37,10 @@ namespace WebshopRestAPI.Controllers
                 return Unauthorized();
 
             // Authentication successful
-            return Ok(new
+            return Ok(new 
             {
+                id = customer.Id,
+                isAdmin = customer.IsAdmin,
                 email = customer.Email,
                 token = authenticationHelper.GenerateToken(customer)
             });
