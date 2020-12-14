@@ -139,12 +139,21 @@ namespace WebshopRestAPI.Controllers
             [HttpDelete("{id}")]
             public ActionResult<Product> Delete(int id)
             {
-                var product = _productService.DeleteProduct(id);
-                if (product == null)
-                {
-                    return StatusCode(404, $"Did not find Product with ID {id}");
-                }
-                return Ok($"Product with ID {id} has been deleted");
+            try
+            {
+                _productService.DeleteProduct(id);
+                return Ok();
+            }
+            catch(Exception E)
+            {
+                return StatusCode(404);
+            }
+               // var product = _productService.DeleteProduct(id);
+                //if (product == null)
+                //{
+                   // return StatusCode(404, $"Did not find Product with ID {id}");
+                //}
+                //return Ok($"Product with ID {id} has been deleted");
             }
         
     }

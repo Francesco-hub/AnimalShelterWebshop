@@ -19,6 +19,6 @@ namespace WebshopApp.Core.ApplicationService
         Product UpdateProduct(Product ProductUpdate);
 
         //Delete - DELETE
-        Product DeleteProduct(int id);
+        void DeleteProduct(int id);
     }
 }

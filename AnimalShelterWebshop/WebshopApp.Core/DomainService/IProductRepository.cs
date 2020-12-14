@@ -20,7 +20,7 @@ namespace WebshopApp.Core.DomainService
         Product Update(Product prodUpdate);
 
         //Delete data
-        Product Delete(int id);
+        void Delete(int id);
     }
 }
 

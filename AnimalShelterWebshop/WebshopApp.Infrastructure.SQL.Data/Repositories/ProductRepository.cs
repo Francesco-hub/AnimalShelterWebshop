@@ -29,11 +29,10 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
             return product;
         }
 
-        public Product Delete(int id)
+        public void Delete(int id)
         {
-            var prodRemoved = _ctx.Remove<Product>(new Product { Id = id }).Entity;
+            _ctx.Remove<Product>(new Product { Id = id });
             _ctx.SaveChanges();
-            return prodRemoved;
         }
 
         public IEnumerable<Product> ReadAllProducts(Filter filter = null)

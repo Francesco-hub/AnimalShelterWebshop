@@ -20,9 +20,9 @@ namespace WebshopApp.Core.ApplicationService.Services
             return _productRepo.Create(prod);
         }
 
-        public Product DeleteProduct(int id)
+        public void DeleteProduct(int id)
         {
-            return _productRepo.Delete(id);
+            _productRepo.Delete(id);
         }
 
         public Product FindProductByID(int id)
