@@ -114,6 +114,10 @@ namespace WebshopRestAPI.Controllers
                 {
                     return BadRequest("Parameter ID and ProductID must be the same");
                 }
+                if (!productDto.TypeName.Equals("Mugs") || !productDto.TypeName.Equals("Keychains") || !productDto.TypeName.Equals("Tshirts"))
+            {
+                productDto.TypeName = "Other";
+            }
             Product product = new Product()
             {
             Id = id,

@@ -28,7 +28,7 @@ namespace WebshopRestAPI.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginInputModel model)
         {
-            var customer = CustomerRepository.ReadAllCustomers().FirstOrDefault(u => u.Email == model.Email);
+            var customer = CustomerRepository.ReadAllCustomers().FirstOrDefault(u => u.Email.ToLower() == model.Email.ToLower());        
 
             if (customer == null)
                 return Unauthorized();
