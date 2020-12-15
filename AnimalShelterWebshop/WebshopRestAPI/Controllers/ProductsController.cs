@@ -93,6 +93,10 @@ namespace WebshopRestAPI.Controllers
                 {
                     BadRequest("Type is required for creating a Product");
                 }
+            if (!product.TypeName.Equals("Mugs") || !product.TypeName.Equals("Keychains") || !product.TypeName.Equals("Tshirts"))
+            {
+                product.TypeName = "Other";
+            }
             Product newProduct = new Product {
                 Id = product.Id,
                 Name = product.Name,
@@ -114,7 +118,7 @@ namespace WebshopRestAPI.Controllers
                 {
                     return BadRequest("Parameter ID and ProductID must be the same");
                 }
-                if (!productDto.TypeName.Equals("Mugs") || !productDto.TypeName.Equals("Keychains") || !productDto.TypeName.Equals("Tshirts"))
+            if (!productDto.TypeName.Equals("Mugs") || !productDto.TypeName.Equals("Keychains") || !productDto.TypeName.Equals("Tshirts"))
             {
                 productDto.TypeName = "Other";
             }
