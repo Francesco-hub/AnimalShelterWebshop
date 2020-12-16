@@ -27,7 +27,10 @@ namespace WebshopApp.Infrastructure.SQL.Data
             //    .HasForeignKey(op => new { op.ProductId });
             //modelBuilder.Entity<Customer>()
             //   .HasMany(o => o.Orders);
-
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Product>()
             .HasMany(p => p.Orders)
             .WithMany(p => p.Products)
@@ -35,14 +38,16 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 j => j
                     .HasOne(pt => pt.Order)
                     .WithMany(t => t.OrderProducts)
-                    .HasForeignKey(pt => pt.OrderId),
+                    .HasForeignKey(pt => pt.OrderId)
+                    .OnDelete(DeleteBehavior.NoAction),
                 j => j
                     .HasOne(pt => pt.Product)
                     .WithMany(p => p.OrderProducts)
-                    .HasForeignKey(pt => pt.ProductId), //.OnDelete(DeleteBehavior),
+                    .HasForeignKey(pt => pt.ProductId)
+                    .OnDelete(DeleteBehavior.NoAction), //.OnDelete(DeleteBehavior),
                 j =>
                 {
-                    j.HasKey(t => new { t.OrderId, t.ProductId });
+                    j.HasKey(t => new { t.OrderId, t.ProductId }); // orderProductId
                 });
             modelBuilder.Entity<Product>().Property<bool>("isDeleted");
             modelBuilder.Entity<Product>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);

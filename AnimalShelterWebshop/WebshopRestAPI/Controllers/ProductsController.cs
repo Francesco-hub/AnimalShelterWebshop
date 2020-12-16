@@ -68,6 +68,7 @@ namespace WebshopRestAPI.Controllers
             List<ProductDTO> prodLst = new List<ProductDTO>();
             foreach(Product prod in dbProdLst)
             {
+                
                 prodLst.Add(new ProductDTO
                 {
                     Id = prod.Id,
@@ -93,10 +94,12 @@ namespace WebshopRestAPI.Controllers
                 {
                     BadRequest("Type is required for creating a Product");
                 }
-            if (!product.TypeName.Equals("Mugs") || !product.TypeName.Equals("Keychains") || !product.TypeName.Equals("Tshirts"))
+           if(product.TypeName != "Mugs" && product.TypeName != "Keychains" && product.TypeName != "Tshirts")
             {
                 product.TypeName = "Other";
             }
+
+
             Product newProduct = new Product {
                 Id = product.Id,
                 Name = product.Name,

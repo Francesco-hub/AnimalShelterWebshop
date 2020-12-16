@@ -17,6 +17,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             CreatePasswordHash(password, out PasswordHashCust1, out PasswordSaltCust1);
             CreatePasswordHash(password, out PasswordHashCust2, out PasswordSaltCust2);
             CreatePasswordHash(password, out PasswordHashCust3, out PasswordSaltCust3);
+            string a = Encoding.Default.GetString(PasswordHashCust1);
             var cust1 = ctx.Customers.Add(new Customer()
             {
                 FirstName = "Mickey",
@@ -79,7 +80,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Name = "It Mug",
                 Price = 3000,
                 TypeName = "Mugs",
-                ImageUrl = "ImageLink 1"
+                ImageUrl = null
 
             }).Entity;
             Product product2 = ctx.Products.Add(new Product()
@@ -87,7 +88,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Name = "Cat Mug",
                 Price = 8000,
                 TypeName = "Mugs",
-                ImageUrl = "ImageLink 2"
+                ImageUrl = null
 
             }).Entity;
             Product product3 = ctx.Products.Add(new Product()
@@ -95,21 +96,21 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Name = "Panda Shirt",
                 Price = 90,
                 TypeName = "Tshirts",
-                ImageUrl = "ImageLink 3"
+                ImageUrl = null
             }).Entity;
             Product product4 = ctx.Products.Add(new Product()
             {
                 Name = "Lion Shirt",
                 Price = 90,
                 TypeName = "Tshirts",
-                ImageUrl = "ImageLink 4"
+                ImageUrl = null
             }).Entity;
             Product product5 = ctx.Products.Add(new Product()
             {
                 Name = "Epraldo",
                 Price = 9000,
                 TypeName = "Other",
-                ImageUrl = "ImageLink 5"
+                ImageUrl = null
 
             }).Entity;
             Product product6 = ctx.Products.Add(new Product()
@@ -117,7 +118,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Name = "Lele Keychain",
                 Price = 5000,
                 TypeName = "Keychains",
-                ImageUrl = "ImageLink 6"
+                ImageUrl = null
 
             }).Entity;
             Product product7 = ctx.Products.Add(new Product()
@@ -125,7 +126,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 Name = "Yui Keychain",
                 Price = 700,
                 TypeName = "Keychains",
-                ImageUrl = "ImageLink 7"
+                ImageUrl = null
 
             }).Entity;
 
@@ -150,6 +151,41 @@ namespace WebshopApp.Infrastructure.SQL.Data
             product2.OrderProducts.Add(ordProd2);
             product2.Orders.Add(order1);
             ctx.SaveChanges();
+        }
+        public static void seedSQLWithCustomers(WebshopAppContext ctx)
+        {
+            string password = "1234";
+            byte[] PasswordHashCust1, PasswordSaltCust1, PasswordHashCust2, PasswordSaltCust2, PasswordHashCust3, PasswordSaltCust3;
+            CreatePasswordHash(password, out PasswordHashCust1, out PasswordSaltCust1);
+            CreatePasswordHash(password, out PasswordHashCust2, out PasswordSaltCust2);
+            CreatePasswordHash(password, out PasswordHashCust3, out PasswordSaltCust3);
+            ctx.Customers.Add(new Customer()
+            {
+                FirstName = "Meg",
+                LastName = "Bramhill",
+                Email = "megb@outlook.com",
+                PasswordHash = PasswordHashCust1,
+                PasswordSalt = PasswordSaltCust1,
+                IsAdmin = false
+            });
+            ctx.Customers.Add(new Customer()
+            {
+                FirstName = "Jimmy",
+                LastName = "Venton",
+                Email = "jimmyv@outlook.com",
+                PasswordHash = PasswordHashCust2,
+                PasswordSalt = PasswordSaltCust2,
+                IsAdmin = false
+            });
+            ctx.Customers.Add(new Customer()
+            {
+                FirstName = "Carl",
+                LastName = "Grimes",
+                Email = "carlg@outlook.com",
+                PasswordHash = PasswordHashCust3,
+                PasswordSalt = PasswordSaltCust3,
+                IsAdmin = false
+            });
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHashCust, out byte[] passwordSaltCust)

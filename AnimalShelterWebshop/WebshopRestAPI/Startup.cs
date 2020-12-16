@@ -27,16 +27,27 @@ namespace WebshopRestAPI
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
+            Environment = env;
             Configuration = configuration;
             JwtSecurityKey.SetSecret("nnfal45lngfqLqLLLLL75K");
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
        
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine("I See prints Again!!");
+            if (Environment.IsDevelopment())
+            {
+                services.AddDbContext<WebshopAppContext>(opt => opt.UseSqlite("Data source=AS-WebShopApp.db"));
+            }
+            else
+            {
+                services.AddDbContext<WebshopAppContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+            }
             Byte[] secretBytes = new byte[40];
             Random rand = new Random();
             rand.NextBytes(secretBytes);
@@ -73,8 +84,6 @@ namespace WebshopRestAPI
                 //options.IncludeXmlComments(filePath);
             });
 
-            services.AddDbContext<WebshopAppContext>(
-               opt => opt.UseSqlite("Data source=AS-WebShopApp.db"));
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
@@ -108,7 +117,13 @@ namespace WebshopRestAPI
             }
             else
             {
+                using (var scope = app.ApplicationServices.CreateScope())
+                {
+                    var ctx = scope.ServiceProvider.GetService<WebshopAppContext>();
+                   // SQLDbInitializer.SeedDb(ctx);
 
+                    Console.WriteLine("I SEE PRINTS");
+                }
             }
 
             app.UseCors("AllowEverything");
