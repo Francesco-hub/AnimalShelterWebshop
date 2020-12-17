@@ -105,7 +105,7 @@ namespace WebshopRestAPI.Controllers
                 Name = product.Name,
                 Price = product.Price,
                 TypeName = product.TypeName,
-                ImageUrl = product.ImageUrl,
+                ImageUrl = product.ImageUrl.ToLower(),
                 Orders = new List<Order>(),
                 OrderProducts = new List<OrderProduct>()
             };
