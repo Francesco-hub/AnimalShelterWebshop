@@ -23,6 +23,7 @@ namespace WebshopRestAPI.Controllers
             }
 
         // GET: api/products (read all)
+        /*
         [Authorize (AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
             public ActionResult<IEnumerable<ProductDTO>> Get()
@@ -60,7 +61,7 @@ namespace WebshopRestAPI.Controllers
             //        Price = dbProd.Price
             //    };
             //}
-
+        */
         [HttpGet("{TypeName}")]
         public ActionResult<IEnumerable <ProductDTO>> Get (string typeName)
         {
@@ -121,7 +122,7 @@ namespace WebshopRestAPI.Controllers
                 {
                     return BadRequest("Parameter ID and ProductID must be the same");
                 }
-            if (!productDto.TypeName.Equals("Mugs") || !productDto.TypeName.Equals("Keychains") || !productDto.TypeName.Equals("Tshirts"))
+            if (productDto.TypeName != "Mugs" && productDto.TypeName != "Keychains" && productDto.TypeName != "Tshirts")
             {
                 productDto.TypeName = "Other";
             }

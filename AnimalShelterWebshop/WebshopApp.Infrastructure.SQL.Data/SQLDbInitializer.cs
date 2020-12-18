@@ -19,7 +19,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 ctx.Database.EnsureCreated();
             }
 
-            //Create customers with hashed and salter passwords
+            //Create customers with hashed and salted passwords
             string password = "1234";
             byte[] PasswordHashCust1, PasswordSaltCust1, PasswordHashCust2, PasswordSaltCust2, PasswordHashCust3, PasswordSaltCust3;
 

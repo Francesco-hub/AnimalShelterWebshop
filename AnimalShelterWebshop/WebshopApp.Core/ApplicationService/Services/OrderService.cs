@@ -12,26 +12,29 @@ namespace WebshopApp.Core.ApplicationService.Services
     {
         readonly IOrderRepository _orderRepo;
         readonly ICustomerRepository _customerRepo;
+        private readonly IOrderValidator _orderValidator;
+
+
+        public OrderService(IOrderValidator orderValidator,
+                                IOrderRepository orderRepo)
+        {
+            if (orderValidator == null) throw new NullReferenceException("Validator cannot be null");
+            if (orderRepo == null) throw new NullReferenceException("OrderRepository cannot be null");
+
+            _orderRepo = orderRepo;
+            _orderValidator = orderValidator;
+        }
+
 
         public OrderService (IOrderRepository orderRepo, ICustomerRepository customerRepo)
         {
             _orderRepo = orderRepo;
             _customerRepo = customerRepo;
         }
+
+
         public Order CreateOrder(Order ord)
         {
-            if(ord.CustomerId == 0 || ord.CustomerId < 0)
-            {
-                throw new InvalidDataException("You need a Customer to create an order");
-            }
-            if (_customerRepo.ReadCustomerByIDIncludingOrders(ord.CustomerId) == null)
-            {
-                throw new InvalidDataException("Customer not found");
-            }
-            if (ord.OrderDate == null)
-            {
-                throw new InvalidDataException("Order needs an order date");
-            }
             return _orderRepo.Create(ord);
         }
 
@@ -50,18 +53,6 @@ namespace WebshopApp.Core.ApplicationService.Services
             return _orderRepo.ReadAllOrders().ToList();
         }
 
-        public List<Order> GetFilteredOrders(Filter filter)
-        {
-            if (filter.CurrentPage < 0 || filter.ItemsPerPage < 0)
-            {
-                throw new InvalidDataException("Current page and items per must be 0 or more");
-            }
-            if ((filter.CurrentPage - 1 * filter.ItemsPerPage) >= _orderRepo.Count())
-            {
-                throw new InvalidDataException("index out of bounds current page is too high");
-            }
-            return _orderRepo.ReadAllOrders().ToList();
-        }
 
         public Order UpdateOrder(Order OrdUpdate)
         {

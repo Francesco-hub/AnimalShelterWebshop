@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using WebshopApp.Core.ApplicationService;
 using WebshopApp.Core.ApplicationService.Services;
+using WebshopApp.Core.ApplicationService.Validators;
 using WebshopApp.Core.DomainService;
 using WebshopApp.Infrastructure.SQL.Data;
 using WebshopApp.Infrastructure.SQL.Data.Repositories;
@@ -39,7 +40,6 @@ namespace WebshopRestAPI
        
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine("I See prints Again!!");
             if (Environment.IsDevelopment())
             {
                 services.AddDbContext<WebshopAppContext>(opt => opt.UseSqlite("Data source=AS-WebShopApp.db"));
@@ -94,6 +94,9 @@ namespace WebshopRestAPI
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IOrderService, OrderService>();
 
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductValidator, ProductValidator>();
+
             services.AddMvc().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -121,8 +124,6 @@ namespace WebshopRestAPI
                 {
                     var ctx = scope.ServiceProvider.GetService<WebshopAppContext>();
                    // SQLDbInitializer.SeedDb(ctx);
-
-                    Console.WriteLine("I SEE PRINTS");
                 }
             }
 

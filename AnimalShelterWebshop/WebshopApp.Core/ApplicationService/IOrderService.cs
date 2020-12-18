@@ -16,7 +16,6 @@ namespace WebshopApp.Core.ApplicationService
         //GET (READ)
         List<Order> FindOrderByCustomerID(int id);
         List<Order> GetAllOrders();
-        List<Order> GetFilteredOrders(Filter filter);
 
         //PUT (UPDATE)
         Order UpdateOrder(Order OrdUpdate);

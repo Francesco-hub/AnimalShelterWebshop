@@ -13,7 +13,6 @@ namespace WebshopApp.Core.DomainService
         Product ReadProductByID(int id);
 
         IEnumerable<Product> ReadProductsByType(string type);
-        IEnumerable<Product> ReadAllProducts(Filter filter = null);
         int Count();
 
         //Update data
@@ -21,6 +20,7 @@ namespace WebshopApp.Core.DomainService
 
         //Delete data
         void Delete(int id);
+        IEnumerable<Product> ReadAllProducts();
     }
 }
 

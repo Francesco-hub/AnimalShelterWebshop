@@ -16,25 +16,9 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
         {
             _ctx = ctx;
         }
-        public int Count()
-        {
-            return _ctx.Orders.Count();
-        }
         public Order Create(Order ord)
         {
             _ctx.Attach(ord).State = EntityState.Added;
-            //foreach (Product prod in ord.Products)
-            //{
-            //    OrderProduct newOrdProd = new OrderProduct
-            //    {
-            //        Order = ord,
-            //        OrderId = ord.Id,
-            //        Product = prod,
-            //        ProductId = prod.Id
-            //    };
-            //    _ctx.OrderProduct.Add(newOrdProd);
-            //    _ctx.SaveChanges();
-            //}          
             _ctx.SaveChanges();
             return ord;
         }
@@ -70,7 +54,7 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
             try
             {
                 List<Order> dbOrdLst = new List<Order>();
-                dbOrdLst = _ctx.Orders.Include(p => p.Products).
+                dbOrdLst = _ctx.Orders.Include(p => p.Products).IgnoreQueryFilters().
                 Select(o => new Order()
                 {
                     Id = o.Id,

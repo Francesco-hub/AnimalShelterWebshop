@@ -9,17 +9,26 @@ namespace WebshopApp.Core.ApplicationService.Services
 {
     public class ProductService : IProductService
     {
-        readonly IProductRepository _productRepo;
+       private readonly IProductRepository _productRepo;
+       private readonly IProductValidator _productValidator;
 
-        public ProductService(IProductRepository prodRepo)
+
+        public ProductService(IProductValidator productValidator, 
+                                IProductRepository prodRepo)
         {
+            if (productValidator == null) throw new NullReferenceException("Validator cannot be null");
+            if (prodRepo == null) throw new NullReferenceException("ProductRepository cannot be null");
+            
             _productRepo = prodRepo;
+            _productValidator = productValidator;
         }
+        
         public Product CreateProduct(Product prod)
         {
+            //_productValidator.DefaultValidation(prod)
             return _productRepo.Create(prod);
         }
-
+        
         public void DeleteProduct(int id)
         {
             _productRepo.Delete(id);
@@ -40,9 +49,18 @@ namespace WebshopApp.Core.ApplicationService.Services
             return _productRepo.ReadAllProducts().ToList();
         }
 
+
         public Product UpdateProduct(Product ProductUpdate)
         {
             return _productRepo.Update(ProductUpdate);
         }
+
+        public Product Update(Product product)
+        {
+            _productValidator.DefaultValidation(product);
+            return null;
+        }
+
+
     }
 }

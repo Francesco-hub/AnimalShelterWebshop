@@ -28,16 +28,17 @@ namespace WebshopApp.Infrastructure.SQL.Data.Repositories
             _ctx.SaveChanges();
             return product;
         }
-
+      
         public void Delete(int id)
         {
-            _ctx.Remove<Product>(new Product { Id = id });
+            Product prod = _ctx.Products.FirstOrDefault(p => p.Id == id);
+            _ctx.Entry(prod).Property("isDeleted").CurrentValue = true;
             _ctx.SaveChanges();
         }
 
-        public IEnumerable<Product> ReadAllProducts(Filter filter = null)
+        public IEnumerable<Product> ReadAllProducts()
         {
-            return _ctx.Products;
+            throw new NotImplementedException();
         }
 
         public Product ReadProductByID(int id)

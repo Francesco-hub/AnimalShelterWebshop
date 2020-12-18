@@ -8,7 +8,7 @@ namespace WebshopApp.Core.ApplicationService
     public interface IProductService
     {
         //Create - POST
-        Product CreateProduct(Product prod);
+       Product CreateProduct(Product prod);
 
         //Read - GET
         Product FindProductByID(int id);
@@ -20,5 +20,6 @@ namespace WebshopApp.Core.ApplicationService
 
         //Delete - DELETE
         void DeleteProduct(int id);
+        Product Update(Product product);
     }
 }

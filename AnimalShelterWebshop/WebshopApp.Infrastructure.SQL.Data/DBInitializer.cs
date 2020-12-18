@@ -13,16 +13,17 @@ namespace WebshopApp.Infrastructure.SQL.Data
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
             string password = "1234";
+            string password2 = "9999";
             byte[] PasswordHashCust1, PasswordSaltCust1, PasswordHashCust2, PasswordSaltCust2, PasswordHashCust3, PasswordSaltCust3;
             CreatePasswordHash(password, out PasswordHashCust1, out PasswordSaltCust1);
-            CreatePasswordHash(password, out PasswordHashCust2, out PasswordSaltCust2);
-            CreatePasswordHash(password, out PasswordHashCust3, out PasswordSaltCust3);
+            CreatePasswordHash(password2, out PasswordHashCust2, out PasswordSaltCust2);
+            CreatePasswordHash(password2, out PasswordHashCust3, out PasswordSaltCust3);
             string a = Encoding.Default.GetString(PasswordHashCust1);
             var cust1 = ctx.Customers.Add(new Customer()
             {
-                FirstName = "Mickey",
-                LastName = "Mouse",
-                Email = "Playhouse@Disneyland",
+                FirstName = "Dell",
+                LastName = "Velti",
+                Email = "dellV@outlook.com",
                 PasswordHash = PasswordHashCust1,
                 PasswordSalt = PasswordSaltCust1,
                 IsAdmin = false
@@ -32,7 +33,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             {
                 FirstName = "Barry",
                 LastName = "Allen",
-                Email = "f",
+                Email = "barrya@fastmail.com",
                 PasswordHash = PasswordHashCust2,
                 PasswordSalt = PasswordSaltCust2,
                 IsAdmin = true
@@ -40,9 +41,9 @@ namespace WebshopApp.Infrastructure.SQL.Data
 
             var cust3 = ctx.Customers.Add(new Customer()
             {
-                FirstName = "Wonder",
-                LastName = "Woman",
-                Email = "PCNuevoMolaMucho@TheBeibus.com",
+                FirstName = "Emily",
+                LastName = "Kyle",
+                Email = "EmilyK@gmail.com",
                 PasswordHash = PasswordHashCust3,
                 PasswordSalt = PasswordSaltCust3,
                 IsAdmin = true
@@ -51,82 +52,82 @@ namespace WebshopApp.Infrastructure.SQL.Data
             Order order1 = ctx.Orders.Add(new Order()
             {
                 CustomerId = cust2.Id,
-                DeliveryAddress = "House 1",
-                DeliveryDate = DateTime.Now,
-                OrderDate = DateTime.Now,
-                TotalPrice = 300
+                DeliveryAddress = "14994 Mandrake Way",
+                DeliveryDate = DateTime.Now.AddDays(-4),
+                OrderDate = DateTime.Now.AddDays(-7),
+                TotalPrice = 150
             }
                 ).Entity;
             Order order2 = ctx.Orders.Add(new Order()
             {
                 CustomerId = cust2.Id,
-                DeliveryAddress = "House 2",
-                DeliveryDate = DateTime.Now,
-                OrderDate = DateTime.Now,
-                TotalPrice = 302
+                DeliveryAddress = "8 Stuart Alley",
+                DeliveryDate = DateTime.Now.AddDays(-20),
+                OrderDate = DateTime.Now.AddDays(-24),
+                TotalPrice = 100
             }
                 ).Entity;
             Order order3 = ctx.Orders.Add(new Order()
             {
                 CustomerId = cust3.Id,
-                DeliveryAddress = "House 4",
-                DeliveryDate = DateTime.Now,
-                OrderDate = DateTime.Now,
-                TotalPrice = 310
+                DeliveryAddress = "3 Shelley Drive",
+                DeliveryDate = DateTime.Now.AddDays(-5),
+                OrderDate = DateTime.Now.AddDays(-8),
+                TotalPrice = 100
             }
             ).Entity;
             Product product1 = ctx.Products.Add(new Product()
             {
-                Name = "It Mug",
-                Price = 3000,
+                Name = "Cat mug",
+                Price = 75,
                 TypeName = "Mugs",
-                ImageUrl = null
+                ImageUrl = "funnycatmug.jpg"
 
             }).Entity;
             Product product2 = ctx.Products.Add(new Product()
             {
-                Name = "Cat Mug",
-                Price = 8000,
+                Name = "Dog mug",
+                Price = 75,
                 TypeName = "Mugs",
-                ImageUrl = null
+                ImageUrl = "whitedogmug.jpg"
 
             }).Entity;
             Product product3 = ctx.Products.Add(new Product()
             {
-                Name = "Panda Shirt",
-                Price = 90,
+                Name = "Cat shirt",
+                Price = 100,
                 TypeName = "Tshirts",
-                ImageUrl = null
+                ImageUrl = "cutecattshirt.jpg"
             }).Entity;
             Product product4 = ctx.Products.Add(new Product()
             {
-                Name = "Lion Shirt",
-                Price = 90,
+                Name = "Dog shirt",
+                Price = 100,
                 TypeName = "Tshirts",
-                ImageUrl = null
+                ImageUrl = "closedeyesdogtshirt.jpg"
             }).Entity;
             Product product5 = ctx.Products.Add(new Product()
             {
-                Name = "Epraldo",
-                Price = 9000,
+                Name = "Dog face mask",
+                Price = 50,
                 TypeName = "Other",
-                ImageUrl = null
+                ImageUrl = "browndogfacemask.jpg"
 
             }).Entity;
             Product product6 = ctx.Products.Add(new Product()
             {
-                Name = "Lele Keychain",
-                Price = 5000,
+                Name = "Cat keychain",
+                Price = 30,
                 TypeName = "Keychains",
-                ImageUrl = null
+                ImageUrl = "whitegreycatkeychain.jpg"
 
             }).Entity;
             Product product7 = ctx.Products.Add(new Product()
             {
-                Name = "Yui Keychain",
-                Price = 700,
+                Name = "Dog keychain",
+                Price = 35,
                 TypeName = "Keychains",
-                ImageUrl = null
+                ImageUrl = "browndogkeychain.jpg"
 
             }).Entity;
 
@@ -135,7 +136,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
             OrderProduct ordProd1 = ctx.OrderProduct.Add(new OrderProduct()
             {
                 OrderId = order1.Id,
-                ProductId =  product1.Id
+                ProductId = product1.Id
             }).Entity;
             OrderProduct ordProd2 = ctx.OrderProduct.Add(new OrderProduct()
             {
@@ -144,48 +145,11 @@ namespace WebshopApp.Infrastructure.SQL.Data
             }).Entity;
             OrderProduct ordProd3 = ctx.OrderProduct.Add(new OrderProduct()
             {
-                OrderId = order3.Id,
+                OrderId = order2.Id,
                 ProductId = product4.Id
             }).Entity;
             ctx.SaveChanges();
-            product2.OrderProducts.Add(ordProd2);
-            product2.Orders.Add(order1);
-            ctx.SaveChanges();
-        }
-        public static void seedSQLWithCustomers(WebshopAppContext ctx)
-        {
-            string password = "1234";
-            byte[] PasswordHashCust1, PasswordSaltCust1, PasswordHashCust2, PasswordSaltCust2, PasswordHashCust3, PasswordSaltCust3;
-            CreatePasswordHash(password, out PasswordHashCust1, out PasswordSaltCust1);
-            CreatePasswordHash(password, out PasswordHashCust2, out PasswordSaltCust2);
-            CreatePasswordHash(password, out PasswordHashCust3, out PasswordSaltCust3);
-            ctx.Customers.Add(new Customer()
-            {
-                FirstName = "Meg",
-                LastName = "Bramhill",
-                Email = "megb@outlook.com",
-                PasswordHash = PasswordHashCust1,
-                PasswordSalt = PasswordSaltCust1,
-                IsAdmin = false
-            });
-            ctx.Customers.Add(new Customer()
-            {
-                FirstName = "Jimmy",
-                LastName = "Venton",
-                Email = "jimmyv@outlook.com",
-                PasswordHash = PasswordHashCust2,
-                PasswordSalt = PasswordSaltCust2,
-                IsAdmin = false
-            });
-            ctx.Customers.Add(new Customer()
-            {
-                FirstName = "Carl",
-                LastName = "Grimes",
-                Email = "carlg@outlook.com",
-                PasswordHash = PasswordHashCust3,
-                PasswordSalt = PasswordSaltCust3,
-                IsAdmin = false
-            });
+
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHashCust, out byte[] passwordSaltCust)
@@ -196,5 +160,6 @@ namespace WebshopApp.Infrastructure.SQL.Data
                 passwordHashCust = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
+
     }
 }

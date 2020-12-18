@@ -23,7 +23,7 @@ namespace WebshopRestAPI.Controllers
 
         //GET: api/orders (read all)
         [HttpGet]
-        public ActionResult<IEnumerable<OrderDTO>> Get()
+       /* public ActionResult<IEnumerable<OrderDTO>> Get()
         {
             try
             {
@@ -55,7 +55,8 @@ namespace WebshopRestAPI.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
+        } 
+       */
         //[HttpGet]
         //public ActionResult<IEnumerable<Order>> Get([FromQuery] Filter filter)
         //{
@@ -135,6 +136,7 @@ namespace WebshopRestAPI.Controllers
         }
 
         //PUT: api/orders/5
+        /*
         [HttpPut("{id}")]
         public ActionResult<Order> Put(int id, [FromBody] Order order)
         {
@@ -155,7 +157,8 @@ namespace WebshopRestAPI.Controllers
                 return StatusCode(404, $"Did not find Order with ID {id}");
             }
             return Ok($"Order with ID {id} has been deleted");
-        }*/
+        }*/ 
+
         public ProductDTO substituteProductToProductDto(Product product)
         {
             ProductDTO prodDTO = new ProductDTO()

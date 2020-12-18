@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using WebshopApp.Core.DomainService;
@@ -11,12 +12,25 @@ namespace WebshopApp.Core.ApplicationService.Services
     {
         readonly ICustomerRepository _customerRepo;
         readonly IOrderRepository _orderRepo;
+        private readonly ICustomerValidator _customerValidator;
+
+        public CustomerService(ICustomerValidator customerValidator,
+                                ICustomerRepository customerRepository)
+        {
+            if (customerValidator == null) throw new NullReferenceException("Validator cannot be null");
+            if (customerRepository == null) throw new NullReferenceException("CustomerRepository cannot be null");
+
+            _customerRepo = customerRepository;
+            _customerValidator = customerValidator;
+        }
+
 
         public CustomerService (ICustomerRepository customerRepository, IOrderRepository orderRepository)
         {
             _customerRepo = customerRepository;
             _orderRepo = orderRepository;
         }
+
         public Customer NewCustomer(string firstName, string lastName, string address, bool isAdmin, string email, byte[] passwordHash, byte[]passwordSalt, List<Order> orderlist)
         {
             var cust = new Customer()

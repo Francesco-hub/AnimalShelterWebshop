@@ -22,11 +22,13 @@ namespace WebshopRestAPI.Controllers
         {
             _customerService = customerService;
         }
-
+    }
+}
+/*
         // GET: api/customers (read all)
         [Authorize]
         [HttpGet]
-        public ActionResult<IEnumerable<CustomerDTO>> Get()
+      /*  public ActionResult<IEnumerable<CustomerDTO>> Get()
         {
             List<Customer> DBcustLst =  _customerService.GetAllCustomers();
             List<CustomerDTO> custLst = new List<CustomerDTO>(); 
@@ -68,7 +70,8 @@ namespace WebshopRestAPI.Controllers
             }
             return custLst;
         }
-
+      */
+      /*
         // GET: api/customers/5 (read by id)
         [Authorize(Roles = "Administrator")]
         [HttpGet("{id}")]
@@ -114,9 +117,10 @@ namespace WebshopRestAPI.Controllers
             return custDTO;
 
         }
-
+      */
         // POST: api/customer (create json)
         //[Authorize(Roles = "Administrator")]
+        /*
         [HttpPost]
         public ActionResult<Customer> Post([FromBody] Customer customer)
         {
@@ -169,3 +173,4 @@ namespace WebshopRestAPI.Controllers
         }
     }
 }
+        */

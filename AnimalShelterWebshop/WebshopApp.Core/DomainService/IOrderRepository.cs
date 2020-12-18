@@ -13,8 +13,6 @@ namespace WebshopApp.Core.DomainService
         //Read data
         IEnumerable<Order> ReadOrderByCustomerID(int id);
         IEnumerable<Order> ReadAllOrders();
-        int Count();
-
         //Update data
         Order Update(Order ordUpdate);
 

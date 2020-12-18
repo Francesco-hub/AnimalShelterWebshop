@@ -15,18 +15,6 @@ namespace WebshopApp.Infrastructure.SQL.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            //modelBuilder.Entity<OrderProduct>()
-            //    .HasKey(op => new { op.OrderId, op.ProductId });
-            //modelBuilder.Entity<OrderProduct>()
-            //    .HasOne(o => o.Order)
-            //    .WithMany(p => p.Products)
-            //    .HasForeignKey(op => new { op.OrderId });
-            //modelBuilder.Entity<OrderProduct>()
-            //    .HasOne(p => p.Product)
-            //    .WithMany(o => o.OrderProducts)
-            //    .HasForeignKey(op => new { op.ProductId });
-            //modelBuilder.Entity<Customer>()
-            //   .HasMany(o => o.Orders);
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer)
                 .WithMany(c => c.Orders)
@@ -44,10 +32,10 @@ namespace WebshopApp.Infrastructure.SQL.Data
                     .HasOne(pt => pt.Product)
                     .WithMany(p => p.OrderProducts)
                     .HasForeignKey(pt => pt.ProductId)
-                    .OnDelete(DeleteBehavior.NoAction), //.OnDelete(DeleteBehavior),
+                    .OnDelete(DeleteBehavior.NoAction), 
                 j =>
                 {
-                    j.HasKey(t => new { t.OrderId, t.ProductId }); // orderProductId
+                    j.HasKey(t => new { t.OrderId, t.ProductId }); 
                 });
             modelBuilder.Entity<Product>().Property<bool>("isDeleted");
             modelBuilder.Entity<Product>().HasQueryFilter(m => EF.Property<bool>(m, "isDeleted") == false);
@@ -57,11 +45,10 @@ namespace WebshopApp.Infrastructure.SQL.Data
         }
         public override int SaveChanges()
         {
-            UpdateDeleted();
             return base.SaveChanges();
         }
 
-        private void UpdateDeleted()
+      /*  private void UpdateDeleted()
         {
             foreach (var entry in ChangeTracker.Entries())
             {
@@ -83,7 +70,7 @@ namespace WebshopApp.Infrastructure.SQL.Data
 
             }
         }
-
+      */
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
